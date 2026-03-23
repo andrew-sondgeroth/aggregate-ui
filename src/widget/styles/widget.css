@@ -1,0 +1,246 @@
+:host {
+  all: initial;
+  display: block;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.aw-root {
+  border-radius: 12px;
+  border: 1px solid var(--aw-border);
+  background: var(--aw-bg);
+  color: var(--aw-text);
+  overflow: hidden;
+}
+
+/* Light theme (default) */
+.aw-root {
+  --aw-bg: #ffffff;
+  --aw-bg-secondary: #f8f9fa;
+  --aw-text: #1a1a2e;
+  --aw-text-secondary: #6b7280;
+  --aw-text-muted: #9ca3af;
+  --aw-border: #e5e7eb;
+  --aw-accent: #3b82f6;
+  --aw-accent-hover: #2563eb;
+  --aw-green: #22c55e;
+  --aw-red: #ef4444;
+}
+
+/* Dark theme */
+.aw-root.aw-dark {
+  --aw-bg: #1a1a2e;
+  --aw-bg-secondary: #12121a;
+  --aw-text: #f0f0f5;
+  --aw-text-secondary: #a0a0b5;
+  --aw-text-muted: #6b6b80;
+  --aw-border: #2a2a3e;
+  --aw-accent: #3b82f6;
+  --aw-accent-hover: #60a5fa;
+  --aw-green: #22c55e;
+  --aw-red: #ef4444;
+}
+
+/* Form */
+.aw-form {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid var(--aw-border);
+}
+
+.aw-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--aw-border);
+  border-radius: 8px;
+  background: var(--aw-bg-secondary);
+  color: var(--aw-text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.aw-input:focus {
+  border-color: var(--aw-accent);
+}
+
+.aw-input::placeholder {
+  color: var(--aw-text-muted);
+}
+
+.aw-btn {
+  padding: 8px 20px;
+  background: var(--aw-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.aw-btn:hover {
+  background: var(--aw-accent-hover);
+}
+
+.aw-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Tabs */
+.aw-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--aw-border);
+}
+
+.aw-tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--aw-text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.aw-tab:hover {
+  color: var(--aw-text-secondary);
+}
+
+.aw-tab.aw-active {
+  color: var(--aw-accent);
+  border-bottom-color: var(--aw-accent);
+  background: var(--aw-bg-secondary);
+}
+
+/* Content */
+.aw-content {
+  padding: 16px;
+}
+
+.aw-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.aw-metric {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--aw-border);
+  background: var(--aw-bg-secondary);
+}
+
+.aw-metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--aw-text-muted);
+  margin-bottom: 4px;
+}
+
+.aw-metric-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--aw-text);
+}
+
+.aw-metric-sub {
+  font-size: 10px;
+  color: var(--aw-text-secondary);
+  margin-top: 2px;
+}
+
+/* Status */
+.aw-status {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  flex-wrap: wrap;
+}
+
+.aw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.aw-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.aw-badge-ok {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--aw-green);
+}
+
+.aw-badge-ok .aw-badge-dot {
+  background: var(--aw-green);
+}
+
+.aw-badge-err {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--aw-red);
+}
+
+.aw-badge-err .aw-badge-dot {
+  background: var(--aw-red);
+}
+
+/* States */
+.aw-loading,
+.aw-error,
+.aw-empty {
+  text-align: center;
+  padding: 32px 16px;
+  font-size: 14px;
+  color: var(--aw-text-secondary);
+}
+
+.aw-error {
+  color: var(--aw-red);
+}
+
+.aw-spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--aw-border);
+  border-top-color: var(--aw-accent);
+  border-radius: 50%;
+  animation: aw-spin 0.8s linear infinite;
+}
+
+@keyframes aw-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Branding */
+.aw-footer {
+  padding: 8px 16px;
+  border-top: 1px solid var(--aw-border);
+  text-align: center;
+  font-size: 11px;
+  color: var(--aw-text-muted);
+}
+
+.aw-footer a {
+  color: var(--aw-accent);
+  text-decoration: none;
+}

@@ -1,0 +1,59 @@
+import PricingCard from '../components/PricingCard'
+
+const tiers = [
+  {
+    tier: 'Free',
+    price: '$0',
+    limit: '100 requests / day',
+    features: [
+      'All endpoints',
+      'Location profiles',
+      'Location search',
+      'Community support',
+    ],
+  },
+  {
+    tier: 'Basic',
+    price: '$29',
+    limit: '1,000 requests / day',
+    features: [
+      'Everything in Free',
+      'Higher rate limits',
+      'Priority support',
+      'Usage analytics',
+    ],
+    highlighted: true,
+  },
+  {
+    tier: 'Pro',
+    price: '$99',
+    limit: '10,000 requests / day',
+    features: [
+      'Everything in Basic',
+      'Highest rate limits',
+      'Dedicated support',
+      'SLA guarantee',
+    ],
+  },
+]
+
+export default function Pricing() {
+  return (
+    <section id="pricing" className="px-6 py-20 sm:py-24">
+      <div className="mx-auto max-w-5xl">
+        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
+          Simple Pricing
+        </h2>
+        <p className="text-center text-[var(--color-text-secondary)] mb-16">
+          Start free. Scale as you grow.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {tiers.map((t) => (
+            <PricingCard key={t.tier} {...t} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
