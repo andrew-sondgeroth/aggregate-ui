@@ -56,7 +56,7 @@ export default function LiveDemo() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`flex-1 px-4 py-3 text-sm font-medium transition ${
+                  className={`flex-1 px-4 py-4 text-sm font-medium transition ${
                     activeTab === tab
                       ? 'text-[var(--color-accent-blue)] border-b-2 border-[var(--color-accent-blue)] bg-[var(--color-bg-secondary)]'
                       : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
@@ -68,7 +68,7 @@ export default function LiveDemo() {
             </div>
 
             {/* Tab Content */}
-            <div className="p-5 sm:p-6">
+            <div className="p-6 sm:p-8">
               {activeTab === 'Area' && <AreaTab data={data} />}
               {activeTab === 'Climate' && <ClimateTab data={data} />}
               {activeTab === 'Tax' && <TaxTab data={data} />}
@@ -87,7 +87,7 @@ function AreaTab({ data }: { data: LocationProfileResponse }) {
   if (!area) return <Unavailable name="Census" />
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
       <ProfileCard label="Population" value={formatNumber(area.population.total_population)} />
       <ProfileCard label="Median Age" value={area.demographics.median_age.toFixed(1)} />
       <ProfileCard label="Median Income" value={formatCurrency(area.economic.median_household_income)} />
@@ -118,7 +118,7 @@ function ClimateTab({ data }: { data: LocationProfileResponse }) {
       <div className="text-xs text-[var(--color-text-muted)] mb-4">
         Station: {climate.nearest_station.name} ({climate.nearest_station.distance_miles.toFixed(1)} mi)
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
         <ProfileCard label="Avg Temperature" value={formatTemp(annual.avg_temp)} />
         <ProfileCard label="Summer Avg High" value={formatTemp(annual.summer_avg_high)} />
         <ProfileCard label="Winter Avg Low" value={formatTemp(annual.winter_avg_low)} />
@@ -141,7 +141,7 @@ function TaxTab({ data }: { data: LocationProfileResponse }) {
       <div className="text-xs text-[var(--color-text-muted)] mb-4">
         State: {tax.state}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
         <ProfileCard label="Combined Sales Tax" value={formatPercent(tax.sales_tax.combined_rate)} />
         <ProfileCard label="State Sales Tax" value={formatPercent(tax.sales_tax.state_rate)} />
         <ProfileCard label="Has Income Tax" value={tax.state_income_tax.has_state_income_tax ? 'Yes' : 'No'} />
@@ -164,7 +164,7 @@ function CrimeTab({ data }: { data: LocationProfileResponse }) {
       <div className="text-xs text-[var(--color-text-muted)] mb-4">
         {crime.state} — {crime.data_year} data | Population: {formatNumber(crime.summary.population)}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
         <ProfileCard label="Total Crime Rate" value={formatRate(crime.summary.total_crime_rate)} subtext="per 100k" />
         <ProfileCard label="Violent Crime" value={formatRate(crime.violent_crime.violent_crime_rate)} subtext="per 100k" />
         <ProfileCard label="Property Crime" value={formatRate(crime.property_crime.property_crime_rate)} subtext="per 100k" />
@@ -187,7 +187,7 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
       <div className="text-xs text-[var(--color-text-muted)] mb-4">
         State: {cost.state}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
         <ProfileCard label="Median Rent" value={formatCurrency(cost.housing_costs.median_gross_rent)} />
         <ProfileCard label="Home Value" value={formatCurrency(cost.housing_costs.median_home_value)} />
         <ProfileCard label="Monthly Housing" value={formatCurrency(cost.housing_costs.median_monthly_housing_cost)} />

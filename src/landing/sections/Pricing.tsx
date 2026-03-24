@@ -48,7 +48,7 @@ export default function Pricing() {
           Start free. Scale as you grow.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 max-w-4xl mx-auto items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 max-w-4xl mx-auto items-stretch">
           {tiers.map((t) => (
             <PricingCard key={t.tier} {...t} />
           ))}

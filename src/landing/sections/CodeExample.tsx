@@ -46,18 +46,18 @@ export default function CodeExample() {
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
           Integrate in Minutes
         </h2>
-        <p className="text-center text-[var(--color-text-secondary)] mb-10">
-          A single REST call returns data from all four sources. No SDKs required.
+        <p className="text-center text-[var(--color-text-secondary)] mb-12">
+          A single REST call returns data from all five sources. No SDKs required.
         </p>
 
-        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] overflow-hidden">
+        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] overflow-hidden">
           {/* Language tabs */}
           <div className="flex border-b border-[var(--color-border)]">
             {LANGS.map((lang) => (
               <button
                 key={lang}
                 onClick={() => setActiveLang(lang)}
-                className={`px-5 py-2.5 text-sm font-medium transition ${
+                className={`px-6 py-3.5 text-sm font-medium transition ${
                   activeLang === lang
                     ? 'text-[var(--color-accent-blue)] border-b-2 border-[var(--color-accent-blue)] bg-[var(--color-bg-secondary)]'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
@@ -69,7 +69,7 @@ export default function CodeExample() {
           </div>
 
           {/* Code block */}
-          <pre className="p-6 overflow-x-auto text-sm leading-relaxed font-['JetBrains_Mono',monospace] text-[var(--color-text-secondary)]">
+          <pre className="p-8 overflow-x-auto text-sm leading-loose font-['JetBrains_Mono',monospace] text-[var(--color-text-secondary)]">
             <code>{examples[activeLang]}</code>
           </pre>
         </div>

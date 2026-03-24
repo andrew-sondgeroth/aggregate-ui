@@ -67,11 +67,11 @@ export default function Features() {
           Get a comprehensive location profile by combining data from five authoritative sources — all normalized and ready to use.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-6 lg:gap-8">
           {features.map((f) => (
             <div
               key={f.title}
-              className="group rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
+              className="group w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-22px)] rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-7 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
               style={{
                 boxShadow: `0 0 0 0 ${f.color}`,
               }}
@@ -89,9 +89,9 @@ export default function Features() {
               >
                 {f.title}
               </h3>
-              <ul className="space-y-2 text-sm text-[var(--color-text-secondary)]">
+              <ul className="space-y-3 text-sm text-[var(--color-text-secondary)]">
                 {f.items.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
+                  <li key={item} className="flex items-start gap-2.5">
                     <span className="mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: f.color }} />
                     {item}
                   </li>
