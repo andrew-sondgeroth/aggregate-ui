@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 py-24 sm:py-32 lg:py-40">
+    <section className="relative overflow-hidden px-6 sm:px-8 py-24 sm:py-32 lg:py-40">
       {/* Background gradient orbs */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-br from-[var(--color-accent-blue)]/20 to-[var(--color-accent-purple)]/20 rounded-full blur-[120px] -z-10" />
 

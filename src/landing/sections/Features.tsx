@@ -58,7 +58,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="px-6 py-20 sm:py-24">
+    <section className="px-6 sm:px-8 py-20 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
           Five Data Sources, One Endpoint

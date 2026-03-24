@@ -14,7 +14,7 @@ export default function LiveDemo() {
   const { data, loading, error, fetchProfile } = useLocationProfile()
 
   return (
-    <section id="demo" className="px-6 py-20 sm:py-24">
+    <section id="demo" className="px-6 sm:px-8 py-20 sm:py-24">
       <div className="mx-auto max-w-5xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
           Try It Live
@@ -34,7 +34,7 @@ export default function LiveDemo() {
         {data && (
           <div className="mt-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 border-b border-[var(--color-border)]">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-5 py-4 border-b border-[var(--color-border)]">
               <div>
                 <span className="text-lg font-semibold text-[var(--color-text-primary)]">
                   ZIP {data.zip}
@@ -68,7 +68,7 @@ export default function LiveDemo() {
             </div>
 
             {/* Tab Content */}
-            <div className="p-6">
+            <div className="p-5 sm:p-6">
               {activeTab === 'Area' && <AreaTab data={data} />}
               {activeTab === 'Climate' && <ClimateTab data={data} />}
               {activeTab === 'Tax' && <TaxTab data={data} />}
