@@ -39,7 +39,7 @@ const tiers = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="px-6 sm:px-8 py-28 sm:py-36">
+    <section id="pricing" className="px-6 sm:px-8 py-32 sm:py-40">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
           Simple Pricing

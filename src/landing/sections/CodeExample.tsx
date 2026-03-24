@@ -41,7 +41,7 @@ export default function CodeExample() {
   const [activeLang, setActiveLang] = useState<Lang>('curl')
 
   return (
-    <section className="px-6 sm:px-8 py-28 sm:py-36 bg-[var(--color-bg-secondary)]">
+    <section className="px-6 sm:px-8 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
       <div className="mx-auto max-w-3xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
           Integrate in Minutes
