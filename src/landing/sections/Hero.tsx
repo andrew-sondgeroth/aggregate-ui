@@ -1,10 +1,10 @@
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden px-8 py-40 sm:py-48 lg:py-56">
+    <section className="relative overflow-hidden px-8 sm:px-16 lg:px-24 py-40 sm:py-48 lg:py-56">
       {/* Background gradient orbs */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-br from-[var(--color-accent-blue)]/20 to-[var(--color-accent-purple)]/20 rounded-full blur-[120px] -z-10" />
 
-      <div className="mx-auto max-w-5xl text-center">
+      <div className="mx-auto max-w-3xl text-center">
         <div className="mb-10 inline-flex items-center gap-2.5 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-5 py-2 text-sm text-[var(--color-text-secondary)]">
           <span className="inline-block h-2 w-2 rounded-full bg-[var(--color-accent-green)] animate-pulse" />
           REST API — 80+ searchable fields

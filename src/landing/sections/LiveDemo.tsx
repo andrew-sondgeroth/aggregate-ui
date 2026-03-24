@@ -14,8 +14,8 @@ export default function LiveDemo() {
   const { data, loading, error, fetchProfile } = useLocationProfile()
 
   return (
-    <section id="demo" className="px-8 py-32 sm:py-40">
-      <div className="mx-auto max-w-5xl">
+    <section id="demo" className="px-8 sm:px-16 lg:px-24 py-32 sm:py-40">
+      <div className="mx-auto max-w-4xl">
         <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
           Try It Live
         </h2>
