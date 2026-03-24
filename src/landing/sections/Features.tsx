@@ -82,17 +82,17 @@ export default function Features() {
                 ;(e.currentTarget as HTMLElement).style.boxShadow = `0 0 0 0 ${f.color}`
               }}
             >
-              <div className="text-4xl mb-6">{f.icon}</div>
+              <div className="text-4xl mb-7">{f.icon}</div>
               <h3
-                className="text-xl font-semibold mb-5"
+                className="text-xl font-semibold mb-6"
                 style={{ color: f.color }}
               >
                 {f.title}
               </h3>
-              <ul className="space-y-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              <ul className="space-y-4 text-base text-[var(--color-text-secondary)] leading-relaxed">
                 {f.items.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: f.color }} />
+                    <span className="mt-2.5 h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: f.color }} />
                     {item}
                   </li>
                 ))}
