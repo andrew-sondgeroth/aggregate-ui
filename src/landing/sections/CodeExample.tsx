@@ -42,7 +42,7 @@ export default function CodeExample() {
 
   return (
     <section className="px-8 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-5xl">
         <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
           Integrate in Minutes
         </h2>
@@ -50,7 +50,7 @@ export default function CodeExample() {
           A single REST call returns data from all five sources. No SDKs required.
         </p>
 
-        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] overflow-hidden">
+        <div className="max-w-3xl mx-auto rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] overflow-hidden">
           {/* Language tabs */}
           <div className="flex border-b border-[var(--color-border)]">
             {LANGS.map((lang) => (

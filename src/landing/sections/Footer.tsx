@@ -3,7 +3,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-[var(--color-border)] px-6 sm:px-8 py-16">
-      <div className="mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div className="mx-auto max-w-5xl px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="text-sm text-[var(--color-text-muted)]">
           &copy; {new Date().getFullYear()} Aggregate API
         </div>
