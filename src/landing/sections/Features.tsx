@@ -58,7 +58,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="px-6 sm:px-8 py-28 sm:py-36">
+    <section className="px-6 sm:px-8 py-28 sm:py-36 bg-[var(--color-bg-secondary)]">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
           Five Data Sources, One Endpoint
@@ -67,11 +67,11 @@ export default function Features() {
           Get a comprehensive location profile by combining data from five authoritative sources — all normalized and ready to use.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
           {features.map((f) => (
             <div
               key={f.title}
-              className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-8 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
+              className="group w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-8 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
               style={{
                 boxShadow: `0 0 0 0 ${f.color}`,
               }}
