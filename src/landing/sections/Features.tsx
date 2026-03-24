@@ -58,7 +58,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="px-6 sm:px-8 py-20 sm:py-24">
+    <section className="px-6 sm:px-8 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
           Five Data Sources, One Endpoint
@@ -67,7 +67,7 @@ export default function Features() {
           Get a comprehensive location profile by combining data from five authoritative sources — all normalized and ready to use.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {features.map((f) => (
             <div
               key={f.title}
@@ -82,9 +82,9 @@ export default function Features() {
                 ;(e.currentTarget as HTMLElement).style.boxShadow = `0 0 0 0 ${f.color}`
               }}
             >
-              <div className="text-3xl mb-4">{f.icon}</div>
+              <div className="text-3xl mb-5">{f.icon}</div>
               <h3
-                className="text-lg font-semibold mb-3"
+                className="text-lg font-semibold mb-4"
                 style={{ color: f.color }}
               >
                 {f.title}

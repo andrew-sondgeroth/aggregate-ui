@@ -39,7 +39,7 @@ const tiers = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="px-6 sm:px-8 py-20 sm:py-24">
+    <section id="pricing" className="px-6 sm:px-8 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
           Simple Pricing
@@ -48,7 +48,7 @@ export default function Pricing() {
           Start free. Scale as you grow.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 max-w-4xl mx-auto items-start">
           {tiers.map((t) => (
             <PricingCard key={t.tier} {...t} />
           ))}

@@ -14,12 +14,12 @@ export default function LiveDemo() {
   const { data, loading, error, fetchProfile } = useLocationProfile()
 
   return (
-    <section id="demo" className="px-6 sm:px-8 py-20 sm:py-24">
+    <section id="demo" className="px-6 sm:px-8 py-24 sm:py-32">
       <div className="mx-auto max-w-5xl">
         <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
           Try It Live
         </h2>
-        <p className="text-center text-[var(--color-text-secondary)] mb-10 max-w-xl mx-auto">
+        <p className="text-center text-[var(--color-text-secondary)] mb-12 max-w-xl mx-auto">
           Enter any US ZIP code to see a real API response. Data is aggregated from five sources in real time.
         </p>
 
@@ -32,7 +32,7 @@ export default function LiveDemo() {
         )}
 
         {data && (
-          <div className="mt-10 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
+          <div className="mt-12 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
             {/* Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-5 py-4 border-b border-[var(--color-border)]">
               <div>
