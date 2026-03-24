@@ -35,7 +35,7 @@ export default function CodeExample() {
           Integrate in Minutes
         </h2>
         <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
-          A single REST call returns data from all five sources.
+          A single REST call returns data from all six sources.
         </p>
       </div>
 

@@ -29,6 +29,12 @@ const features = [
     icon: '🏠',
     items: ['Fair market rents by bedroom', 'Housing cost breakdowns', 'Regional price indices', 'Rent-to-income ratios'],
   },
+  {
+    title: 'Voting & Elections',
+    color: 'var(--color-accent-purple)',
+    icon: '🗳',
+    items: ['Presidential election history', 'Partisan lean & trends', 'Congressional district results', 'State officials & legislature'],
+  },
 ]
 
 export default function Features() {
@@ -36,10 +42,10 @@ export default function Features() {
     <section className="py-24 sm:py-32 border-t border-[var(--color-border)]">
       <div className="text-center mb-16">
         <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)]">
-          Five Data Sources, One Endpoint
+          Six Data Sources, One Endpoint
         </h2>
         <p className="mt-4 text-lg text-[var(--color-text-secondary)] max-w-lg mx-auto">
-          Comprehensive location profiles from five authoritative sources — normalized and ready to use.
+          Comprehensive location profiles from six authoritative sources — normalized and ready to use.
         </p>
       </div>
 

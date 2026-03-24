@@ -18,7 +18,7 @@ export default function Hero() {
       </h1>
 
       <p className="mt-8 text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-xl mx-auto leading-relaxed">
-        Census, weather, tax, crime, and cost-of-living data for any US ZIP code — one API call.
+        Census, weather, tax, crime, cost-of-living, and voting data for any US ZIP code — one API call.
       </p>
 
       <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
