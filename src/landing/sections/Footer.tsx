@@ -2,12 +2,12 @@ export default function Footer() {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
   return (
-    <footer className="border-t border-[var(--color-border)] px-6 sm:px-8 py-12">
+    <footer className="border-t border-[var(--color-border)] px-6 sm:px-8 py-16">
       <div className="mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="text-sm text-[var(--color-text-muted)]">
           &copy; {new Date().getFullYear()} Aggregate API
         </div>
-        <div className="flex gap-6 text-sm">
+        <div className="flex gap-8 text-sm">
           <a
             href={`${apiBaseUrl}/swagger-ui.html`}
             target="_blank"

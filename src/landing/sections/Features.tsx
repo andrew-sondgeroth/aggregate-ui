@@ -58,20 +58,20 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="px-6 sm:px-8 py-24 sm:py-32">
+    <section className="px-6 sm:px-8 py-28 sm:py-36">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
+        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
           Five Data Sources, One Endpoint
         </h2>
-        <p className="text-center text-[var(--color-text-secondary)] mb-16 max-w-2xl mx-auto">
+        <p className="text-center text-lg text-[var(--color-text-secondary)] mb-20 max-w-2xl mx-auto leading-relaxed">
           Get a comprehensive location profile by combining data from five authoritative sources — all normalized and ready to use.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((f) => (
             <div
               key={f.title}
-              className="group w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-22px)] rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-7 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
+              className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-8 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
               style={{
                 boxShadow: `0 0 0 0 ${f.color}`,
               }}
@@ -82,17 +82,17 @@ export default function Features() {
                 ;(e.currentTarget as HTMLElement).style.boxShadow = `0 0 0 0 ${f.color}`
               }}
             >
-              <div className="text-3xl mb-5">{f.icon}</div>
+              <div className="text-4xl mb-6">{f.icon}</div>
               <h3
-                className="text-lg font-semibold mb-4"
+                className="text-lg font-semibold mb-5"
                 style={{ color: f.color }}
               >
                 {f.title}
               </h3>
-              <ul className="space-y-3 text-sm text-[var(--color-text-secondary)]">
+              <ul className="space-y-3.5 text-sm text-[var(--color-text-secondary)] leading-relaxed">
                 {f.items.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5">
-                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: f.color }} />
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: f.color }} />
                     {item}
                   </li>
                 ))}

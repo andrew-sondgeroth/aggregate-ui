@@ -14,12 +14,12 @@ export default function LiveDemo() {
   const { data, loading, error, fetchProfile } = useLocationProfile()
 
   return (
-    <section id="demo" className="px-6 sm:px-8 py-24 sm:py-32">
+    <section id="demo" className="px-6 sm:px-8 py-28 sm:py-36">
       <div className="mx-auto max-w-5xl">
-        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-4">
+        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
           Try It Live
         </h2>
-        <p className="text-center text-[var(--color-text-secondary)] mb-12 max-w-xl mx-auto">
+        <p className="text-center text-lg text-[var(--color-text-secondary)] mb-14 max-w-xl mx-auto leading-relaxed">
           Enter any US ZIP code to see a real API response. Data is aggregated from five sources in real time.
         </p>
 
@@ -32,9 +32,9 @@ export default function LiveDemo() {
         )}
 
         {data && (
-          <div className="mt-12 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
+          <div className="mt-14 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-5 py-4 border-b border-[var(--color-border)]">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-5 border-b border-[var(--color-border)]">
               <div>
                 <span className="text-lg font-semibold text-[var(--color-text-primary)]">
                   ZIP {data.zip}
@@ -115,7 +115,7 @@ function ClimateTab({ data }: { data: LocationProfileResponse }) {
   const annual = climate.annual_summary
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-5">
         Station: {climate.nearest_station.name} ({climate.nearest_station.distance_miles.toFixed(1)} mi)
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -138,7 +138,7 @@ function TaxTab({ data }: { data: LocationProfileResponse }) {
 
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-5">
         State: {tax.state}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -161,7 +161,7 @@ function CrimeTab({ data }: { data: LocationProfileResponse }) {
 
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-5">
         {crime.state} — {crime.data_year} data | Population: {formatNumber(crime.summary.population)}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -184,7 +184,7 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
 
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-5">
         State: {cost.state}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -203,7 +203,7 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
 
 function Unavailable({ name }: { name: string }) {
   return (
-    <div className="text-center py-8 text-[var(--color-text-muted)]">
+    <div className="text-center py-12 text-[var(--color-text-muted)]">
       {name} data unavailable for this ZIP code
     </div>
   )
