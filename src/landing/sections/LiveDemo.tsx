@@ -14,27 +14,27 @@ export default function LiveDemo() {
   const { data, loading, error, fetchProfile } = useLocationProfile()
 
   return (
-    <section id="demo" className="px-6 sm:px-8 py-32 sm:py-40">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
+    <section id="demo" className="px-8 py-32 sm:py-40">
+      <div className="mx-auto max-w-4xl">
+        <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
           Try It Live
         </h2>
-        <p className="text-center text-lg text-[var(--color-text-secondary)] mb-14 max-w-xl mx-auto leading-relaxed">
+        <p className="text-center text-lg text-[var(--color-text-secondary)] mb-16 max-w-xl mx-auto leading-relaxed">
           Enter any US ZIP code to see a real API response. Data is aggregated from five sources in real time.
         </p>
 
         <ZipInput onSubmit={fetchProfile} loading={loading} />
 
         {error && (
-          <div className="mt-6 text-center text-[var(--color-accent-red)] text-sm">
+          <div className="mt-8 text-center text-[var(--color-accent-red)] text-sm">
             {error}
           </div>
         )}
 
         {data && (
-          <div className="mt-14 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
+          <div className="mt-16 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-6 py-5 border-b border-[var(--color-border)]">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-8 py-5 border-b border-[var(--color-border)]">
               <div>
                 <span className="text-lg font-semibold text-[var(--color-text-primary)]">
                   ZIP {data.zip}
@@ -68,7 +68,7 @@ export default function LiveDemo() {
             </div>
 
             {/* Tab Content */}
-            <div className="p-6 sm:p-8">
+            <div className="p-8">
               {activeTab === 'Area' && <AreaTab data={data} />}
               {activeTab === 'Climate' && <ClimateTab data={data} />}
               {activeTab === 'Tax' && <TaxTab data={data} />}

@@ -58,20 +58,20 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="px-6 sm:px-8 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
-      <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
+    <section className="px-8 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
+      <div className="mx-auto max-w-5xl">
+        <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
           Five Data Sources, One Endpoint
         </h2>
         <p className="text-center text-lg text-[var(--color-text-secondary)] mb-20 max-w-2xl mx-auto leading-relaxed">
           Get a comprehensive location profile by combining data from five authoritative sources — all normalized and ready to use.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-8">
+        <div className="flex flex-wrap justify-center gap-8 lg:gap-10">
           {features.map((f) => (
             <div
               key={f.title}
-              className="group w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-8 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
+              className="group w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-27px)] rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-8 lg:p-10 transition-all duration-300 hover:border-[var(--color-border-glow)] hover:bg-[var(--color-bg-card-hover)]"
               style={{
                 boxShadow: `0 0 0 0 ${f.color}`,
               }}
@@ -84,12 +84,12 @@ export default function Features() {
             >
               <div className="text-4xl mb-6">{f.icon}</div>
               <h3
-                className="text-lg font-semibold mb-5"
+                className="text-xl font-semibold mb-5"
                 style={{ color: f.color }}
               >
                 {f.title}
               </h3>
-              <ul className="space-y-3.5 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              <ul className="space-y-4 text-sm text-[var(--color-text-secondary)] leading-relaxed">
                 {f.items.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <span className="mt-2 h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: f.color }} />

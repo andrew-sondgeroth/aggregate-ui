@@ -41,12 +41,12 @@ export default function CodeExample() {
   const [activeLang, setActiveLang] = useState<Lang>('curl')
 
   return (
-    <section className="px-6 sm:px-8 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
+    <section className="px-8 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
       <div className="mx-auto max-w-3xl">
-        <h2 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-6">
+        <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
           Integrate in Minutes
         </h2>
-        <p className="text-center text-lg text-[var(--color-text-secondary)] mb-14 leading-relaxed">
+        <p className="text-center text-lg text-[var(--color-text-secondary)] mb-16 leading-relaxed">
           A single REST call returns data from all five sources. No SDKs required.
         </p>
 
@@ -57,7 +57,7 @@ export default function CodeExample() {
               <button
                 key={lang}
                 onClick={() => setActiveLang(lang)}
-                className={`px-6 py-4 text-sm font-medium transition ${
+                className={`px-8 py-4 text-sm font-medium transition ${
                   activeLang === lang
                     ? 'text-[var(--color-accent-blue)] border-b-2 border-[var(--color-accent-blue)] bg-[var(--color-bg-secondary)]'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
@@ -69,7 +69,7 @@ export default function CodeExample() {
           </div>
 
           {/* Code block */}
-          <pre className="p-8 overflow-x-auto text-sm leading-loose font-['JetBrains_Mono',monospace] text-[var(--color-text-secondary)]">
+          <pre className="p-8 sm:p-10 overflow-x-auto text-sm leading-loose font-['JetBrains_Mono',monospace] text-[var(--color-text-secondary)]">
             <code>{examples[activeLang]}</code>
           </pre>
         </div>
