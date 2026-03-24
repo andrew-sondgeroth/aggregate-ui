@@ -41,8 +41,8 @@ export default function CodeExample() {
   const [activeLang, setActiveLang] = useState<Lang>('curl')
 
   return (
-    <section className="px-8 sm:px-16 lg:px-24 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
-      <div className="mx-auto max-w-4xl">
+    <section className="py-32 sm:py-40">
+      <div>
         <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
           Integrate in Minutes
         </h2>
@@ -50,7 +50,7 @@ export default function CodeExample() {
           A single REST call returns data from all five sources. No SDKs required.
         </p>
 
-        <div className="max-w-3xl mx-auto rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] overflow-hidden">
+        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-primary)] overflow-hidden">
           {/* Language tabs */}
           <div className="flex border-b border-[var(--color-border)]">
             {LANGS.map((lang) => (

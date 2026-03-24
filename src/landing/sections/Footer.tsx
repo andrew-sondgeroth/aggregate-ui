@@ -2,8 +2,8 @@ export default function Footer() {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
   return (
-    <footer className="border-t border-[var(--color-border)] px-8 sm:px-16 lg:px-24 py-16">
-      <div className="mx-auto max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-6">
+    <footer className="border-t border-[var(--color-border)] py-16">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="text-sm text-[var(--color-text-muted)]">
           &copy; {new Date().getFullYear()} Aggregate API
         </div>

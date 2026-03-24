@@ -58,8 +58,8 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="px-8 sm:px-16 lg:px-24 py-32 sm:py-40 bg-[var(--color-bg-secondary)]">
-      <div className="mx-auto max-w-4xl">
+    <section className="py-32 sm:py-40">
+      <div>
         <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
           Five Data Sources, One Endpoint
         </h2>
