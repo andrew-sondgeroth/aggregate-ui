@@ -14,70 +14,61 @@ export default function LiveDemo() {
   const { data, loading, error, fetchProfile } = useLocationProfile()
 
   return (
-    <section id="demo" className="py-32 sm:py-40">
-      <div>
-        <h2 className="text-center text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-6">
+    <section id="demo" className="py-24 sm:py-32 border-t border-[var(--color-border)]">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)]">
           Try It Live
         </h2>
-        <p className="text-center text-lg text-[var(--color-text-secondary)] mb-16 max-w-xl mx-auto leading-relaxed">
-          Enter any US ZIP code to see a real API response. Data is aggregated from five sources in real time.
+        <p className="mt-4 text-lg text-[var(--color-text-secondary)] max-w-md mx-auto">
+          Enter any US ZIP code to see a real API response.
         </p>
+      </div>
 
-        <ZipInput onSubmit={fetchProfile} loading={loading} />
+      <ZipInput onSubmit={fetchProfile} loading={loading} />
 
-        {error && (
-          <div className="mt-8 text-center text-[var(--color-accent-red)] text-sm">
-            {error}
-          </div>
-        )}
+      {error && (
+        <div className="mt-6 text-center text-[var(--color-accent-red)] text-sm">{error}</div>
+      )}
 
-        {data && (
-          <div className="mt-16 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-8 py-5 border-b border-[var(--color-border)]">
-              <div>
-                <span className="text-lg font-semibold text-[var(--color-text-primary)]">
-                  ZIP {data.zip}
-                </span>
-                <span className="ml-3 text-xs text-[var(--color-text-muted)]">
-                  {data.generated_at}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {Object.entries(data.data_sources).map(([name, status]) => (
-                  <DataSourceBadge key={name} name={name} status={status} />
-                ))}
-              </div>
+      {data && (
+        <div className="mt-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-6 py-4 border-b border-[var(--color-border)]">
+            <div>
+              <span className="text-lg font-semibold text-[var(--color-text-primary)]">ZIP {data.zip}</span>
+              <span className="ml-3 text-xs text-[var(--color-text-muted)]">{data.generated_at}</span>
             </div>
-
-            {/* Tabs */}
-            <div className="flex border-b border-[var(--color-border)]">
-              {TABS.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 px-4 py-4 text-sm font-medium transition ${
-                    activeTab === tab
-                      ? 'text-[var(--color-accent-blue)] border-b-2 border-[var(--color-accent-blue)] bg-[var(--color-bg-secondary)]'
-                      : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
-                  }`}
-                >
-                  {tab}
-                </button>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(data.data_sources).map(([name, status]) => (
+                <DataSourceBadge key={name} name={name} status={status} />
               ))}
             </div>
-
-            {/* Tab Content */}
-            <div className="p-8">
-              {activeTab === 'Area' && <AreaTab data={data} />}
-              {activeTab === 'Climate' && <ClimateTab data={data} />}
-              {activeTab === 'Tax' && <TaxTab data={data} />}
-              {activeTab === 'Crime' && <CrimeTab data={data} />}
-              {activeTab === 'Cost' && <CostTab data={data} />}
-            </div>
           </div>
-        )}
-      </div>
+
+          <div className="flex border-b border-[var(--color-border)]">
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`flex-1 px-4 py-3.5 text-sm font-medium transition ${
+                  activeTab === tab
+                    ? 'text-[var(--color-accent-blue)] border-b-2 border-[var(--color-accent-blue)] bg-[var(--color-bg-secondary)]'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          <div className="p-6">
+            {activeTab === 'Area' && <AreaTab data={data} />}
+            {activeTab === 'Climate' && <ClimateTab data={data} />}
+            {activeTab === 'Tax' && <TaxTab data={data} />}
+            {activeTab === 'Crime' && <CrimeTab data={data} />}
+            {activeTab === 'Cost' && <CostTab data={data} />}
+          </div>
+        </div>
+      )}
     </section>
   )
 }
@@ -85,9 +76,8 @@ export default function LiveDemo() {
 function AreaTab({ data }: { data: LocationProfileResponse }) {
   const area = data.area
   if (!area) return <Unavailable name="Census" />
-
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <ProfileCard label="Population" value={formatNumber(area.population.total_population)} />
       <ProfileCard label="Median Age" value={area.demographics.median_age.toFixed(1)} />
       <ProfileCard label="Median Income" value={formatCurrency(area.economic.median_household_income)} />
@@ -99,11 +89,7 @@ function AreaTab({ data }: { data: LocationProfileResponse }) {
       <ProfileCard label="Broadband" value={formatPercent(area.internet_access.broadband_percent)} />
       <ProfileCard label="Work From Home" value={formatPercent(area.economic.work_from_home_percent)} />
       <ProfileCard label="Gini Index" value={area.income_distribution.gini_index.toFixed(4)} subtext="Income inequality" />
-      <ProfileCard
-        label="Community Risk"
-        value={area.community_risk.risk_tier}
-        subtext={`Score: ${area.community_risk.risk_score.toFixed(1)}/100`}
-      />
+      <ProfileCard label="Community Risk" value={area.community_risk.risk_tier} subtext={`Score: ${area.community_risk.risk_score.toFixed(1)}/100`} />
     </div>
   )
 }
@@ -111,14 +97,13 @@ function AreaTab({ data }: { data: LocationProfileResponse }) {
 function ClimateTab({ data }: { data: LocationProfileResponse }) {
   const climate = data.climate
   if (!climate) return <Unavailable name="Weather" />
-
   const annual = climate.annual_summary
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-5">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4">
         Station: {climate.nearest_station.name} ({climate.nearest_station.distance_miles.toFixed(1)} mi)
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         <ProfileCard label="Avg Temperature" value={formatTemp(annual.avg_temp)} />
         <ProfileCard label="Summer Avg High" value={formatTemp(annual.summer_avg_high)} />
         <ProfileCard label="Winter Avg Low" value={formatTemp(annual.winter_avg_low)} />
@@ -135,13 +120,10 @@ function ClimateTab({ data }: { data: LocationProfileResponse }) {
 function TaxTab({ data }: { data: LocationProfileResponse }) {
   const tax = data.tax
   if (!tax) return <Unavailable name="Tax" />
-
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-5">
-        State: {tax.state}
-      </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4">State: {tax.state}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         <ProfileCard label="Combined Sales Tax" value={formatPercent(tax.sales_tax.combined_rate)} />
         <ProfileCard label="State Sales Tax" value={formatPercent(tax.sales_tax.state_rate)} />
         <ProfileCard label="Has Income Tax" value={tax.state_income_tax.has_state_income_tax ? 'Yes' : 'No'} />
@@ -158,13 +140,12 @@ function TaxTab({ data }: { data: LocationProfileResponse }) {
 function CrimeTab({ data }: { data: LocationProfileResponse }) {
   const crime = data.crime
   if (!crime) return <Unavailable name="Crime" />
-
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-5">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4">
         {crime.state} — {crime.data_year} data | Population: {formatNumber(crime.summary.population)}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         <ProfileCard label="Total Crime Rate" value={formatRate(crime.summary.total_crime_rate)} subtext="per 100k" />
         <ProfileCard label="Violent Crime" value={formatRate(crime.violent_crime.violent_crime_rate)} subtext="per 100k" />
         <ProfileCard label="Property Crime" value={formatRate(crime.property_crime.property_crime_rate)} subtext="per 100k" />
@@ -181,13 +162,10 @@ function CrimeTab({ data }: { data: LocationProfileResponse }) {
 function CostTab({ data }: { data: LocationProfileResponse }) {
   const cost = data.cost
   if (!cost) return <Unavailable name="Cost" />
-
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-5">
-        State: {cost.state}
-      </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4">State: {cost.state}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         <ProfileCard label="Median Rent" value={formatCurrency(cost.housing_costs.median_gross_rent)} />
         <ProfileCard label="Home Value" value={formatCurrency(cost.housing_costs.median_home_value)} />
         <ProfileCard label="Monthly Housing" value={formatCurrency(cost.housing_costs.median_monthly_housing_cost)} />
@@ -202,9 +180,5 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
 }
 
 function Unavailable({ name }: { name: string }) {
-  return (
-    <div className="text-center py-12 text-[var(--color-text-muted)]">
-      {name} data unavailable for this ZIP code
-    </div>
-  )
+  return <div className="text-center py-10 text-[var(--color-text-muted)]">{name} data unavailable for this ZIP code</div>
 }

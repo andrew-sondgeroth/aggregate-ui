@@ -7,13 +7,15 @@ import Footer from './landing/sections/Footer'
 
 export default function App() {
   return (
-    <div className="min-h-screen max-w-[960px] mx-auto px-6">
-      <Hero />
-      <Features />
-      <LiveDemo />
-      <CodeExample />
-      <Pricing />
-      <Footer />
+    <div className="min-h-screen flex flex-col items-center">
+      <div className="w-full max-w-[1200px] px-6 sm:px-10 lg:px-16">
+        <Hero />
+        <Features />
+        <LiveDemo />
+        <CodeExample />
+        <Pricing />
+        <Footer />
+      </div>
     </div>
   )
 }
