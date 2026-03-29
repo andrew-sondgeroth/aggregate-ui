@@ -17,18 +17,18 @@ export default function ZipInput({ onSubmit, loading }: ZipInputProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3 max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="flex gap-[12px] max-w-[440px]">
       <input
         type="text"
         value={zip}
         onChange={(e) => setZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
         placeholder="Enter ZIP code"
-        className="flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-5 py-3.5 text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] outline-none transition focus:border-[var(--color-accent-gold)]/60 focus:ring-1 focus:ring-[var(--color-accent-gold)]/20 font-[var(--font-mono)] text-base"
+        className="flex-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] px-[20px] py-[16px] text-[var(--color-text)] placeholder-[var(--color-text-dim)] outline-none transition focus:border-[var(--color-gold)]/50 focus:ring-1 focus:ring-[var(--color-gold)]/15 font-[var(--font-mono)] text-[16px]"
       />
       <button
         type="submit"
         disabled={!isValidZip(zip) || loading}
-        className="rounded-xl bg-[var(--color-accent-gold)] px-8 py-3.5 font-semibold text-[var(--color-bg-primary)] text-sm transition disabled:opacity-40 disabled:cursor-not-allowed hover:brightness-110 whitespace-nowrap shadow-md shadow-[var(--color-accent-gold)]/15"
+        className="rounded-xl bg-[var(--color-gold)] px-[32px] py-[16px] font-semibold text-[var(--color-bg-base)] text-[14px] transition disabled:opacity-40 disabled:cursor-not-allowed hover:brightness-110 whitespace-nowrap shadow-lg shadow-[var(--color-gold)]/10"
       >
         {loading ? (
           <span className="inline-flex items-center gap-2">

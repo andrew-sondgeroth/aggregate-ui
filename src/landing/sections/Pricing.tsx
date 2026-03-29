@@ -22,45 +22,51 @@ const tiers = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-28 sm:py-40">
-      <div className="mb-20 animate-fade-up">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Pricing</p>
-        <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
+    <section id="pricing" style={{ paddingTop: '48px', paddingBottom: '48px' }}>
+      <div className="text-center mb-[64px]">
+        <p className="text-[13px] font-semibold tracking-[0.25em] uppercase text-[var(--color-gold)] mb-[16px]">
+          Pricing
+        </p>
+        <h2 className="font-[var(--font-display)] text-[34px] sm:text-[40px] lg:text-[48px] text-[var(--color-text)] leading-[1.15]">
           Simple, transparent pricing
         </h2>
-        <p className="mt-4 text-base text-[var(--color-text-secondary)]">
+        <p className="mt-[20px] text-[16px] text-[var(--color-text-sub)] leading-[1.7]">
           Start free. Scale as you grow.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {tiers.map((t, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
+        {tiers.map((t) => (
           <div
             key={t.tier}
-            className={`animate-fade-up delay-${(i + 1) * 100} relative rounded-2xl border p-8 flex flex-col transition-all duration-300 ${
+            className={`relative rounded-2xl border p-[32px] flex flex-col transition-all duration-300 ${
               t.highlighted
-                ? 'border-[var(--color-accent-gold)]/50 bg-[var(--color-bg-card)] shadow-xl shadow-[var(--color-accent-gold)]/5 ring-1 ring-[var(--color-accent-gold)]/15'
+                ? 'border-[var(--color-gold)]/40 bg-[var(--color-bg-card)] shadow-2xl shadow-[var(--color-gold)]/5 ring-1 ring-[var(--color-gold)]/10'
                 : 'border-[var(--color-border)] bg-[var(--color-bg-card)] hover:border-[var(--color-border-hover)]'
             }`}
           >
-            {t.highlighted && (
-              <div className="absolute -top-3 left-8">
-                <span className="inline-flex rounded-full bg-[var(--color-accent-gold)] px-3 py-1 text-xs font-bold text-[var(--color-bg-primary)] uppercase tracking-wider">
-                  Most Popular
+            <div className="flex items-center gap-3 mb-[4px]">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--color-text-dim)]">
+                {t.tier}
+              </p>
+              {t.highlighted && (
+                <span className="rounded-full bg-[var(--color-gold)] px-[12px] py-[3px] text-[10px] font-bold text-[var(--color-bg-base)] uppercase tracking-wider">
+                  Popular
                 </span>
-              </div>
-            )}
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">{t.tier}</h3>
-            <div className="mt-4">
-              <span className="font-[var(--font-display)] text-5xl text-[var(--color-text-primary)]">{t.price}</span>
-              <span className="ml-1.5 text-sm text-[var(--color-text-muted)]">/month</span>
+              )}
             </div>
-            <div className="mt-2 text-sm text-[var(--color-text-secondary)]">{t.limit}</div>
 
-            <ul className="mt-8 space-y-3 flex-1">
+            <div className="mt-[24px]">
+              <span className="font-[var(--font-display)] text-[48px] leading-[1] text-[var(--color-text)]">{t.price}</span>
+              <span className="ml-[8px] text-[14px] text-[var(--color-text-dim)]">/month</span>
+            </div>
+
+            <p className="mt-[12px] text-[14px] text-[var(--color-text-sub)]">{t.limit}</p>
+
+            <ul className="mt-[32px] space-y-[16px] flex-1">
               {t.features.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm text-[var(--color-text-secondary)]">
-                  <span className="text-[var(--color-accent-green)] mt-0.5 flex-shrink-0">&#10003;</span>
+                <li key={f} className="flex items-start gap-[12px] text-[14px] text-[var(--color-text-sub)]">
+                  <span className="text-[var(--color-green)] mt-0.5 flex-shrink-0">&#10003;</span>
                   {f}
                 </li>
               ))}
@@ -68,10 +74,10 @@ export default function Pricing() {
 
             <a
               href="#"
-              className={`mt-8 block text-center rounded-xl px-6 py-3.5 font-semibold text-sm transition ${
+              className={`mt-[32px] block text-center rounded-xl px-[24px] py-[16px] font-semibold text-[14px] transition ${
                 t.highlighted
-                  ? 'bg-[var(--color-accent-gold)] text-[var(--color-bg-primary)] hover:brightness-110 shadow-md shadow-[var(--color-accent-gold)]/20'
-                  : 'border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-card-hover)] hover:border-[var(--color-border-hover)]'
+                  ? 'bg-[var(--color-gold)] text-[var(--color-bg-base)] hover:brightness-110 shadow-lg shadow-[var(--color-gold)]/15'
+                  : 'border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-bg-card-hover)] hover:border-[var(--color-border-hover)]'
               }`}
             >
               Get Started

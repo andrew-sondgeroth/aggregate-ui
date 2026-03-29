@@ -35,37 +35,39 @@ export default function CodeExample() {
   const [activeLang, setActiveLang] = useState<Lang>('curl')
 
   return (
-    <section className="py-28 sm:py-40">
-      <div className="mb-16 animate-fade-up">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Integration</p>
-        <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
+    <section style={{ paddingTop: '48px', paddingBottom: '48px' }}>
+      <div className="text-center mb-[64px]">
+        <p className="text-[13px] font-semibold tracking-[0.25em] uppercase text-[var(--color-gold)] mb-[16px]">
+          Integration
+        </p>
+        <h2 className="font-[var(--font-display)] text-[34px] sm:text-[40px] lg:text-[48px] text-[var(--color-text)] leading-[1.15]">
           Integrate in minutes
         </h2>
-        <p className="mt-4 text-base text-[var(--color-text-secondary)]">
+        <p className="mt-[20px] text-[16px] text-[var(--color-text-sub)] leading-[1.7]">
           A single REST call returns data from every source.
         </p>
       </div>
 
-      <div className="animate-fade-up delay-200 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] overflow-hidden">
-        <div className="flex gap-0 border-b border-[var(--color-border)]">
+      <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
+        <div className="flex border-b border-[var(--color-border)]">
           {LANGS.map((lang) => (
             <button
               key={lang}
               onClick={() => setActiveLang(lang)}
-              className={`px-6 py-3.5 text-sm font-medium transition-colors relative ${
+              className={`relative px-[28px] py-[16px] text-[14px] font-medium transition-colors ${
                 activeLang === lang
-                  ? 'text-[var(--color-accent-gold)] bg-[var(--color-bg-card)]'
-                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
+                  ? 'text-[var(--color-gold)]'
+                  : 'text-[var(--color-text-dim)] hover:text-[var(--color-text-sub)]'
               }`}
             >
               {langLabels[lang]}
               {activeLang === lang && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--color-accent-gold)]" />
+                <span className="absolute bottom-0 inset-x-0 h-[2px] bg-[var(--color-gold)]" />
               )}
             </button>
           ))}
         </div>
-        <pre className="p-6 sm:p-8 overflow-x-auto text-sm leading-relaxed font-[var(--font-mono)] text-[var(--color-text-secondary)]">
+        <pre className="p-[28px] sm:p-[36px] overflow-x-auto text-[14px] leading-[1.8] font-[var(--font-mono)] text-[var(--color-text-sub)]">
           <code>{examples[activeLang]}</code>
         </pre>
       </div>

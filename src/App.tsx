@@ -5,22 +5,32 @@ import CodeExample from './landing/sections/CodeExample'
 import Pricing from './landing/sections/Pricing'
 import Footer from './landing/sections/Footer'
 
+function Container({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={className} style={{ width: '100%' }}>
+      <div style={{ maxWidth: '1080px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '64px', paddingRight: '64px' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
 function Nav() {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg-primary)]/80 backdrop-blur-xl">
-      <div className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16 flex items-center justify-between h-16">
-        <a href="/" className="flex items-center gap-2.5">
-          <span className="h-7 w-7 rounded-lg bg-[var(--color-accent-gold)] flex items-center justify-center text-[var(--color-bg-primary)] font-bold text-sm">A</span>
-          <span className="font-semibold text-[var(--color-text-primary)] tracking-tight">Aggregate API</span>
+    <nav className="sticky top-0 z-50 bg-[var(--color-bg-base)]/80 backdrop-blur-2xl border-b border-[var(--color-border)]">
+      <div style={{ maxWidth: '1080px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '64px', paddingRight: '64px' }} className="h-[64px] flex items-center justify-between">
+        <a href="/" className="flex items-center gap-3">
+          <span className="h-8 w-8 rounded-lg bg-[var(--color-gold)] flex items-center justify-center text-[var(--color-bg-base)] font-bold text-sm">A</span>
+          <span className="font-semibold text-[var(--color-text)] tracking-tight">Aggregate API</span>
         </a>
-        <div className="hidden sm:flex items-center gap-8 text-sm">
-          <a href="#features" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition">Features</a>
-          <a href="#demo" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition">Demo</a>
-          <a href="#pricing" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition">Pricing</a>
-          <a href={`${apiBaseUrl}/swagger-ui.html`} target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition">Docs</a>
-          <a href="#pricing" className="rounded-lg bg-[var(--color-accent-gold)] px-4 py-2 text-sm font-semibold text-[var(--color-bg-primary)] hover:brightness-110 transition">
+        <div className="hidden sm:flex items-center gap-8 text-[14px] text-[var(--color-text-sub)]">
+          <a href="#features" className="hover:text-[var(--color-text)] transition">Features</a>
+          <a href="#demo" className="hover:text-[var(--color-text)] transition">Demo</a>
+          <a href="#pricing" className="hover:text-[var(--color-text)] transition">Pricing</a>
+          <a href={`${apiBaseUrl}/swagger-ui.html`} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-text)] transition">Docs</a>
+          <a href="#pricing" className="ml-2 rounded-lg bg-[var(--color-gold)] px-5 py-2 font-semibold text-[var(--color-bg-base)] text-[14px] hover:brightness-110 transition">
             Get API Key
           </a>
         </div>
@@ -31,38 +41,14 @@ function Nav() {
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className="relative z-10">
       <Nav />
-
-      <div className="max-w-[1280px] mx-auto w-full px-6 sm:px-10 lg:px-16">
-        <Hero />
-      </div>
-
-      <div className="w-full border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]/40">
-        <div className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16">
-          <Features />
-        </div>
-      </div>
-
-      <div className="max-w-[1280px] mx-auto w-full px-6 sm:px-10 lg:px-16">
-        <LiveDemo />
-      </div>
-
-      <div className="w-full border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]/40">
-        <div className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16">
-          <CodeExample />
-        </div>
-      </div>
-
-      <div className="max-w-[1280px] mx-auto w-full px-6 sm:px-10 lg:px-16">
-        <Pricing />
-      </div>
-
-      <div className="w-full border-t border-[var(--color-border)]">
-        <div className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16">
-          <Footer />
-        </div>
-      </div>
+      <Container><Hero /></Container>
+      <Container className="bg-[var(--color-bg-alt)]"><Features /></Container>
+      <Container><LiveDemo /></Container>
+      <Container className="bg-[var(--color-bg-alt)]"><CodeExample /></Container>
+      <Container><Pricing /></Container>
+      <Container className="bg-[var(--color-bg-alt)]"><Footer /></Container>
     </div>
   )
 }
