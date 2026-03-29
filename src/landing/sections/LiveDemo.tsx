@@ -14,7 +14,7 @@ export default function LiveDemo() {
   const { data, loading, error, fetchProfile } = useLocationProfile()
 
   return (
-    <section id="demo" className="py-32 sm:py-44 border-t border-[var(--color-border)]">
+    <section id="demo" className="py-36 sm:py-48">
       <div className="mb-12 animate-fade-up">
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Live Demo</p>
         <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
