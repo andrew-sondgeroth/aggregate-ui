@@ -2,7 +2,7 @@ export default function Footer() {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
   return (
-    <footer className="border-t border-[var(--color-border)] py-16">
+    <footer className="border-t border-[var(--color-border)] py-20">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex items-center gap-2.5">
           <span className="h-7 w-7 rounded-lg bg-[var(--color-accent-gold)] flex items-center justify-center text-[var(--color-bg-primary)] font-bold text-sm">A</span>

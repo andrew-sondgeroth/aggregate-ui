@@ -39,7 +39,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-24 sm:py-32 border-t border-[var(--color-border)]">
+    <section id="features" className="py-32 sm:py-44 border-t border-[var(--color-border)]">
       <div className="mb-16 animate-fade-up">
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Data Sources</p>
         <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">

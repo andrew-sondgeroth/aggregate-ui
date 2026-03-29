@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative pt-24 sm:pt-36 pb-28 sm:pb-40 text-center">
+    <section className="relative pt-32 sm:pt-44 pb-36 sm:pb-52 text-center">
       {/* Ambient glow */}
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[var(--color-accent-gold)]/8 rounded-full blur-[160px] -z-10" />
 
