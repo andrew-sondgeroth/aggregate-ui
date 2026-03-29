@@ -23,34 +23,37 @@ const tiers = [
 export default function Pricing() {
   return (
     <section id="pricing" className="py-24 sm:py-32 border-t border-[var(--color-border)]">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)]">
-          Simple Pricing
+      <div className="mb-16 animate-fade-up">
+        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Pricing</p>
+        <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
+          Simple, transparent pricing
         </h2>
-        <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
+        <p className="mt-4 text-base text-[var(--color-text-secondary)]">
           Start free. Scale as you grow.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {tiers.map((t) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {tiers.map((t, i) => (
           <div
             key={t.tier}
-            className={`rounded-2xl border p-8 flex flex-col ${
+            className={`animate-fade-up delay-${(i + 1) * 100} relative rounded-2xl border p-8 flex flex-col transition-all duration-300 ${
               t.highlighted
-                ? 'border-[var(--color-accent-blue)] bg-[var(--color-bg-card)] shadow-lg shadow-[var(--color-accent-blue)]/10 ring-1 ring-[var(--color-accent-blue)]/20'
-                : 'border-[var(--color-border)] bg-[var(--color-bg-card)]'
+                ? 'border-[var(--color-accent-gold)]/50 bg-[var(--color-bg-card)] shadow-xl shadow-[var(--color-accent-gold)]/5 ring-1 ring-[var(--color-accent-gold)]/15'
+                : 'border-[var(--color-border)] bg-[var(--color-bg-card)] hover:border-[var(--color-border-hover)]'
             }`}
           >
             {t.highlighted && (
-              <div className="inline-flex self-start rounded-full bg-[var(--color-accent-blue)]/15 px-3 py-1 text-xs font-semibold text-[var(--color-accent-blue)] uppercase tracking-wider mb-4">
-                Most Popular
+              <div className="absolute -top-3 left-8">
+                <span className="inline-flex rounded-full bg-[var(--color-accent-gold)] px-3 py-1 text-xs font-bold text-[var(--color-bg-primary)] uppercase tracking-wider">
+                  Most Popular
+                </span>
               </div>
             )}
-            <h3 className="text-lg font-bold text-[var(--color-text-primary)]">{t.tier}</h3>
-            <div className="mt-3">
-              <span className="text-4xl font-bold text-[var(--color-text-primary)]">{t.price}</span>
-              <span className="ml-1 text-[var(--color-text-muted)]">/month</span>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">{t.tier}</h3>
+            <div className="mt-4">
+              <span className="font-[var(--font-display)] text-5xl text-[var(--color-text-primary)]">{t.price}</span>
+              <span className="ml-1.5 text-sm text-[var(--color-text-muted)]">/month</span>
             </div>
             <div className="mt-2 text-sm text-[var(--color-text-secondary)]">{t.limit}</div>
 
@@ -65,10 +68,10 @@ export default function Pricing() {
 
             <a
               href="#"
-              className={`mt-8 block text-center rounded-xl px-6 py-3.5 font-semibold transition ${
+              className={`mt-8 block text-center rounded-xl px-6 py-3.5 font-semibold text-sm transition ${
                 t.highlighted
-                  ? 'bg-gradient-to-r from-[var(--color-accent-blue)] to-[var(--color-accent-purple)] text-white hover:brightness-110'
-                  : 'border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-card-hover)]'
+                  ? 'bg-[var(--color-accent-gold)] text-[var(--color-bg-primary)] hover:brightness-110 shadow-md shadow-[var(--color-accent-gold)]/20'
+                  : 'border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-card-hover)] hover:border-[var(--color-border-hover)]'
               }`}
             >
               Get Started

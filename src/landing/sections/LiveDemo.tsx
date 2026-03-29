@@ -15,27 +15,31 @@ export default function LiveDemo() {
 
   return (
     <section id="demo" className="py-24 sm:py-32 border-t border-[var(--color-border)]">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)]">
-          Try It Live
+      <div className="mb-12 animate-fade-up">
+        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Live Demo</p>
+        <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
+          Try it live
         </h2>
-        <p className="mt-4 text-lg text-[var(--color-text-secondary)] max-w-md mx-auto">
+        <p className="mt-4 text-base text-[var(--color-text-secondary)] max-w-md">
           Enter any US ZIP code to see a real API response from six data sources.
         </p>
       </div>
 
-      <ZipInput onSubmit={fetchProfile} loading={loading} />
+      <div className="animate-fade-up delay-200">
+        <ZipInput onSubmit={fetchProfile} loading={loading} />
+      </div>
 
       {error && (
         <div className="mt-6 text-center text-[var(--color-accent-red)] text-sm">{error}</div>
       )}
 
       {data && (
-        <div className="mt-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-6 py-4 border-b border-[var(--color-border)]">
-            <div>
-              <span className="text-lg font-semibold text-[var(--color-text-primary)]">ZIP {data.zip}</span>
-              <span className="ml-3 text-xs text-[var(--color-text-muted)]">{data.generated_at}</span>
+        <div className="mt-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden animate-fade-up">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-bg-secondary)]">
+            <div className="flex items-center gap-3">
+              <span className="font-[var(--font-mono)] text-sm font-medium text-[var(--color-accent-gold)]">ZIP {data.zip}</span>
+              <span className="text-xs text-[var(--color-text-muted)]">{data.generated_at}</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {Object.entries(data.data_sources).map(([name, status]) => (
@@ -44,22 +48,27 @@ export default function LiveDemo() {
             </div>
           </div>
 
+          {/* Tabs */}
           <div className="flex border-b border-[var(--color-border)]">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 px-4 py-3.5 text-sm font-medium transition ${
+                className={`relative flex-1 px-4 py-3.5 text-sm font-medium transition-colors ${
                   activeTab === tab
-                    ? 'text-[var(--color-accent-blue)] border-b-2 border-[var(--color-accent-blue)] bg-[var(--color-bg-secondary)]'
+                    ? 'text-[var(--color-accent-gold)] bg-[var(--color-bg-card)]'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
                 }`}
               >
                 {tab}
+                {activeTab === tab && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--color-accent-gold)]" />
+                )}
               </button>
             ))}
           </div>
 
+          {/* Content */}
           <div className="p-6">
             {activeTab === 'Area' && <AreaTab data={data} />}
             {activeTab === 'Climate' && <ClimateTab data={data} />}
@@ -77,7 +86,7 @@ function AreaTab({ data }: { data: LocationProfileResponse }) {
   const area = data.area
   if (!area) return <Unavailable name="Census" />
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
       <ProfileCard label="Population" value={formatNumber(area.population.total_population)} />
       <ProfileCard label="Median Age" value={area.demographics.median_age.toFixed(1)} />
       <ProfileCard label="Median Income" value={formatCurrency(area.economic.median_household_income)} />
@@ -100,10 +109,10 @@ function ClimateTab({ data }: { data: LocationProfileResponse }) {
   const annual = climate.annual_summary
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4 font-[var(--font-mono)]">
         Station: {climate.nearest_station.name} ({climate.nearest_station.distance_miles.toFixed(1)} mi)
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         <ProfileCard label="Avg Temperature" value={formatTemp(annual.avg_temp)} />
         <ProfileCard label="Summer Avg High" value={formatTemp(annual.summer_avg_high)} />
         <ProfileCard label="Winter Avg Low" value={formatTemp(annual.winter_avg_low)} />
@@ -122,8 +131,8 @@ function TaxTab({ data }: { data: LocationProfileResponse }) {
   if (!tax) return <Unavailable name="Tax" />
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">State: {tax.state}</div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4 font-[var(--font-mono)]">State: {tax.state}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         <ProfileCard label="Combined Sales Tax" value={formatPercent(tax.sales_tax.combined_rate)} />
         <ProfileCard label="State Sales Tax" value={formatPercent(tax.sales_tax.state_rate)} />
         <ProfileCard label="Has Income Tax" value={tax.state_income_tax.has_state_income_tax ? 'Yes' : 'No'} />
@@ -142,10 +151,10 @@ function CrimeTab({ data }: { data: LocationProfileResponse }) {
   if (!crime) return <Unavailable name="Crime" />
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4 font-[var(--font-mono)]">
         {crime.state} — {crime.data_year} data | Population: {formatNumber(crime.summary.population)}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         <ProfileCard label="Total Crime Rate" value={formatRate(crime.summary.total_crime_rate)} subtext="per 100k" />
         <ProfileCard label="Violent Crime" value={formatRate(crime.violent_crime.violent_crime_rate)} subtext="per 100k" />
         <ProfileCard label="Property Crime" value={formatRate(crime.property_crime.property_crime_rate)} subtext="per 100k" />
@@ -164,8 +173,8 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
   if (!cost) return <Unavailable name="Cost" />
   return (
     <div>
-      <div className="text-xs text-[var(--color-text-muted)] mb-4">State: {cost.state}</div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="text-xs text-[var(--color-text-muted)] mb-4 font-[var(--font-mono)]">State: {cost.state}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         <ProfileCard label="Median Rent" value={formatCurrency(cost.housing_costs.median_gross_rent)} />
         <ProfileCard label="Home Value" value={formatCurrency(cost.housing_costs.median_home_value)} />
         <ProfileCard label="Monthly Housing" value={formatCurrency(cost.housing_costs.median_monthly_housing_cost)} />
@@ -180,5 +189,5 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
 }
 
 function Unavailable({ name }: { name: string }) {
-  return <div className="text-center py-10 text-[var(--color-text-muted)]">{name} data unavailable for this ZIP code</div>
+  return <div className="text-center py-10 text-[var(--color-text-muted)] text-sm">{name} data unavailable for this ZIP code</div>
 }

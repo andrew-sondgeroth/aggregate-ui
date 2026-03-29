@@ -1,37 +1,37 @@
 const features = [
   {
     title: 'Census Data',
-    color: 'var(--color-accent-blue)',
+    accent: 'var(--color-accent-blue)',
     icon: '📊',
     items: ['Population & demographics', 'Median income & housing values', 'Education & employment', 'Community risk scoring'],
   },
   {
     title: 'Weather & Climate',
-    color: 'var(--color-accent-green)',
+    accent: 'var(--color-accent-teal)',
     icon: '🌤',
     items: ['Annual temperature summaries', 'Monthly climate breakdowns', 'Precipitation & snowfall', 'Heating & cooling degree days'],
   },
   {
     title: 'Tax Information',
-    color: 'var(--color-accent-amber)',
+    accent: 'var(--color-accent-gold)',
     icon: '💰',
     items: ['Combined sales tax rates', 'State income tax brackets', 'Property & excise taxes', 'IRS income statistics'],
   },
   {
     title: 'Crime Statistics',
-    color: 'var(--color-accent-red)',
+    accent: 'var(--color-accent-red)',
     icon: '🛡',
     items: ['Violent crime rates', 'Property crime rates', 'Year-over-year trends', 'Per-capita crime totals'],
   },
   {
     title: 'Cost of Living',
-    color: '#06b6d4',
+    accent: 'var(--color-accent-cyan)',
     icon: '🏠',
     items: ['Fair market rents by bedroom', 'Housing cost breakdowns', 'Regional price indices', 'Rent-to-income ratios'],
   },
   {
     title: 'Voting & Elections',
-    color: 'var(--color-accent-purple)',
+    accent: 'var(--color-accent-purple)',
     icon: '🗳',
     items: ['Presidential election history', 'Partisan lean & trends', 'Congressional district results', 'State officials & legislature'],
   },
@@ -39,34 +39,47 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="py-24 sm:py-32 border-t border-[var(--color-border)]">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)]">
-          Six Data Sources, One Endpoint
+    <section id="features" className="py-24 sm:py-32 border-t border-[var(--color-border)]">
+      <div className="mb-16 animate-fade-up">
+        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Data Sources</p>
+        <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
+          Six sources, one endpoint
         </h2>
-        <p className="mt-4 text-lg text-[var(--color-text-secondary)] max-w-lg mx-auto">
-          Comprehensive location profiles from six authoritative sources — normalized and ready to use.
+        <p className="mt-4 text-base text-[var(--color-text-secondary)] max-w-lg">
+          Comprehensive location profiles from six authoritative federal sources — normalized and ready to use.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {features.map((f) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {features.map((f, i) => (
           <div
             key={f.title}
-            className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-8 transition-all duration-300 hover:border-[var(--color-border-glow)]"
+            className={`animate-fade-up delay-${(i + 1) * 100} group relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-7 transition-all duration-300 hover:border-[var(--color-border-hover)] hover:bg-[var(--color-bg-card-hover)]`}
           >
-            <div className="text-3xl mb-4">{f.icon}</div>
-            <h3 className="text-lg font-semibold mb-4" style={{ color: f.color }}>
-              {f.title}
-            </h3>
-            <ul className="space-y-3 text-sm text-[var(--color-text-secondary)]">
-              {f.items.map((item) => (
-                <li key={item} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: f.color }} />
-                  {item}
-                </li>
-              ))}
-            </ul>
+            {/* Accent left bar */}
+            <div
+              className="absolute left-0 top-6 bottom-6 w-[3px] rounded-full opacity-40 group-hover:opacity-100 transition-opacity"
+              style={{ backgroundColor: f.accent }}
+            />
+            <div className="pl-3">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">{f.icon}</span>
+                <h3 className="text-base font-semibold" style={{ color: f.accent }}>
+                  {f.title}
+                </h3>
+              </div>
+              <ul className="space-y-2.5 text-sm text-[var(--color-text-secondary)]">
+                {f.items.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <span
+                      className="mt-[7px] h-1 w-1 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: f.accent }}
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         ))}
       </div>
