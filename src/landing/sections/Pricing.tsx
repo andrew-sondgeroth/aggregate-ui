@@ -22,8 +22,8 @@ const tiers = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-36 sm:py-48">
-      <div className="mb-16 animate-fade-up">
+    <section id="pricing" className="py-28 sm:py-40">
+      <div className="mb-20 animate-fade-up">
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Pricing</p>
         <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
           Simple, transparent pricing

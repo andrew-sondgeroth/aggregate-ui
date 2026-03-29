@@ -29,39 +29,39 @@ function Nav() {
   )
 }
 
-function SectionBreak() {
-  return <div className="w-full max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16"><hr className="border-[var(--color-border)]" /></div>
-}
-
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col items-center relative">
+    <div className="min-h-screen flex flex-col relative">
       <Nav />
-      <div className="w-full max-w-[1280px] px-6 sm:px-10 lg:px-16">
+
+      <div className="max-w-[1280px] mx-auto w-full px-6 sm:px-10 lg:px-16">
         <Hero />
       </div>
-      <SectionBreak />
-      <div className="w-full bg-[var(--color-bg-secondary)]/40">
+
+      <div className="w-full border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]/40">
         <div className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16">
           <Features />
         </div>
       </div>
-      <SectionBreak />
-      <div className="w-full max-w-[1280px] px-6 sm:px-10 lg:px-16">
+
+      <div className="max-w-[1280px] mx-auto w-full px-6 sm:px-10 lg:px-16">
         <LiveDemo />
       </div>
-      <SectionBreak />
-      <div className="w-full bg-[var(--color-bg-secondary)]/40">
+
+      <div className="w-full border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]/40">
         <div className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16">
           <CodeExample />
         </div>
       </div>
-      <SectionBreak />
-      <div className="w-full max-w-[1280px] px-6 sm:px-10 lg:px-16">
+
+      <div className="max-w-[1280px] mx-auto w-full px-6 sm:px-10 lg:px-16">
         <Pricing />
       </div>
-      <div className="w-full max-w-[1280px] px-6 sm:px-10 lg:px-16">
-        <Footer />
+
+      <div className="w-full border-t border-[var(--color-border)]">
+        <div className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-16">
+          <Footer />
+        </div>
       </div>
     </div>
   )

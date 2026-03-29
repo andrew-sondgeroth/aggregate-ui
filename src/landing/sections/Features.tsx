@@ -39,8 +39,8 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-36 sm:py-48">
-      <div className="mb-16 animate-fade-up">
+    <section id="features" className="py-28 sm:py-40">
+      <div className="mb-20 animate-fade-up">
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Data Sources</p>
         <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
           Every data point, one endpoint
@@ -50,7 +50,7 @@ export default function Features() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {features.map((f, i) => (
           <div
             key={f.title}

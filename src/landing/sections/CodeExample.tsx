@@ -35,8 +35,8 @@ export default function CodeExample() {
   const [activeLang, setActiveLang] = useState<Lang>('curl')
 
   return (
-    <section className="py-36 sm:py-48">
-      <div className="mb-12 animate-fade-up">
+    <section className="py-28 sm:py-40">
+      <div className="mb-16 animate-fade-up">
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Integration</p>
         <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
           Integrate in minutes
