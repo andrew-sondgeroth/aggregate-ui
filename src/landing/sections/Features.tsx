@@ -43,10 +43,10 @@ export default function Features() {
       <div className="mb-16 animate-fade-up">
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-gold)] mb-3">Data Sources</p>
         <h2 className="font-[var(--font-display)] text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text-primary)]">
-          Six sources, one endpoint
+          Every data point, one endpoint
         </h2>
         <p className="mt-4 text-base text-[var(--color-text-secondary)] max-w-lg">
-          Comprehensive location profiles from six authoritative federal sources — normalized and ready to use.
+          Comprehensive location profiles from authoritative federal sources — normalized and ready to use.
         </p>
       </div>
 

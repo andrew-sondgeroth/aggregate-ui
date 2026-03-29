@@ -21,7 +21,7 @@ export default function LiveDemo() {
           Try it live
         </h2>
         <p className="mt-4 text-base text-[var(--color-text-secondary)] max-w-md">
-          Enter any US ZIP code to see a real API response from six data sources.
+          Enter any US ZIP code to see a real API response across all data sources.
         </p>
       </div>
 

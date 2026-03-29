@@ -42,7 +42,7 @@ export default function CodeExample() {
           Integrate in minutes
         </h2>
         <p className="mt-4 text-base text-[var(--color-text-secondary)]">
-          A single REST call returns data from all six sources.
+          A single REST call returns data from every source.
         </p>
       </div>
 
