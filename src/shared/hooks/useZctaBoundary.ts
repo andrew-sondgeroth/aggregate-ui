@@ -7,7 +7,7 @@ interface UseZctaBoundaryResult {
   error: string | null
 }
 
-const TIGERWEB_BASE = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWCT_Current/MapServer/2/query'
+const TIGERWEB_BASE = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/1/query'
 
 export function useZctaBoundary(zip: string | null): UseZctaBoundaryResult {
   const [geojson, setGeojson] = useState<FeatureCollection | null>(null)
@@ -29,7 +29,7 @@ export function useZctaBoundary(zip: string | null): UseZctaBoundaryResult {
 
     try {
       const params = new URLSearchParams({
-        where: `ZCTA5CE20='${zipCode}'`,
+        where: `ZCTA5='${zipCode}'`,
         outFields: '*',
         outSR: '4326',
         f: 'geojson',
