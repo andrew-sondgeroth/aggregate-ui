@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { LocationProfileResponse } from '../../api/types'
-import { AggregateApiClient } from '../../api/client'
+import { demoClient, AggregateApiClient } from '../../api/client'
 
 interface UseLocationProfileResult {
   data: LocationProfileResponse | null
@@ -22,7 +22,7 @@ export function useLocationProfile(
     setError(null)
     setData(null)
     try {
-      const client = new AggregateApiClient(baseUrl, apiKey)
+      const client = (baseUrl || apiKey) ? new AggregateApiClient(baseUrl, apiKey) : demoClient
       const result = await client.getProfile(zip)
       setData(result)
     } catch (err) {
