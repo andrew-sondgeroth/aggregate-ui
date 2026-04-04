@@ -1,4 +1,5 @@
 import type { LocationProfileResponse, LocationSearchResponse, SearchFieldsResponse, SearchCriterion } from '../../api/types'
+import type { CriterionRow } from './CriteriaBuilder'
 import DataSourceBadge from '../../landing/components/DataSourceBadge'
 import ProfileSummary from '../../explore/components/ProfileSummary'
 import CriteriaBuilder from './CriteriaBuilder'
@@ -14,6 +15,10 @@ interface SearchSidePanelProps {
   searchLoading: boolean
   searchError: string | null
   onSearch: (criteria: SearchCriterion[], limit: number) => void
+  criteriaRows: CriterionRow[]
+  setCriteriaRows: React.Dispatch<React.SetStateAction<CriterionRow[]>>
+  criteriaLimit: string
+  setCriteriaLimit: React.Dispatch<React.SetStateAction<string>>
   // Results
   results: LocationSearchResponse | null
   selectedZip: string | null
@@ -99,6 +104,7 @@ export default function SearchSidePanel(props: SearchSidePanelProps) {
   const {
     view, onViewChange,
     fields, fieldsLoading, searchLoading, searchError, onSearch,
+    criteriaRows, setCriteriaRows, criteriaLimit, setCriteriaLimit,
     results, selectedZip, onSelectZip,
     profileData, profileLoading,
   } = props
@@ -122,6 +128,10 @@ export default function SearchSidePanel(props: SearchSidePanelProps) {
             fieldsLoading={fieldsLoading}
             loading={searchLoading}
             onSearch={onSearch}
+            rows={criteriaRows}
+            setRows={setCriteriaRows}
+            limit={criteriaLimit}
+            setLimit={setCriteriaLimit}
           />
         )}
 

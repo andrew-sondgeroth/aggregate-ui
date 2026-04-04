@@ -3,6 +3,8 @@ import { useLocationSearch } from '../shared/hooks/useLocationSearch'
 import { useLocationProfile } from '../shared/hooks/useLocationProfile'
 import { useZctaBoundary } from '../shared/hooks/useZctaBoundary'
 import { useZctaCentroids } from '../shared/hooks/useZctaCentroids'
+import { emptyRow } from './components/CriteriaBuilder'
+import type { CriterionRow } from './components/CriteriaBuilder'
 import type { SearchCriterion } from '../api/types'
 import SearchMapView from './components/SearchMapView'
 import SearchSidePanel from './components/SearchSidePanel'
@@ -12,6 +14,8 @@ type View = 'search' | 'results' | 'profile'
 export default function SearchPage() {
   const [view, setView] = useState<View>('search')
   const [selectedZip, setSelectedZip] = useState<string | null>(null)
+  const [criteriaRows, setCriteriaRows] = useState<CriterionRow[]>([emptyRow()])
+  const [criteriaLimit, setCriteriaLimit] = useState('25')
 
   const { results, fields, loading: searchLoading, fieldsLoading, error: searchError, search } = useLocationSearch()
   const { data: profileData, loading: profileLoading, fetchProfile } = useLocationProfile()
@@ -65,6 +69,10 @@ export default function SearchPage() {
         searchLoading={searchLoading}
         searchError={searchError}
         onSearch={handleSearch}
+        criteriaRows={criteriaRows}
+        setCriteriaRows={setCriteriaRows}
+        criteriaLimit={criteriaLimit}
+        setCriteriaLimit={setCriteriaLimit}
         results={results}
         selectedZip={selectedZip}
         onSelectZip={handleSelectZip}

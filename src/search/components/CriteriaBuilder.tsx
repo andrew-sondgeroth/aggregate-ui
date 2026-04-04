@@ -1,14 +1,6 @@
-import { useState } from 'react'
 import type { SearchFieldsResponse, SearchCriterion } from '../../api/types'
 
-interface CriteriaBuilderProps {
-  fields: SearchFieldsResponse | null
-  fieldsLoading: boolean
-  loading: boolean
-  onSearch: (criteria: SearchCriterion[], limit: number) => void
-}
-
-interface CriterionRow {
+export interface CriterionRow {
   id: number
   field: string
   min: string
@@ -18,13 +10,22 @@ interface CriterionRow {
 
 let nextId = 1
 
-function emptyRow(): CriterionRow {
+export function emptyRow(): CriterionRow {
   return { id: nextId++, field: '', min: '', max: '', weight: '1' }
 }
 
-export default function CriteriaBuilder({ fields, fieldsLoading, loading, onSearch }: CriteriaBuilderProps) {
-  const [rows, setRows] = useState<CriterionRow[]>([emptyRow()])
-  const [limit, setLimit] = useState('25')
+interface CriteriaBuilderProps {
+  fields: SearchFieldsResponse | null
+  fieldsLoading: boolean
+  loading: boolean
+  onSearch: (criteria: SearchCriterion[], limit: number) => void
+  rows: CriterionRow[]
+  setRows: React.Dispatch<React.SetStateAction<CriterionRow[]>>
+  limit: string
+  setLimit: React.Dispatch<React.SetStateAction<string>>
+}
+
+export default function CriteriaBuilder({ fields, fieldsLoading, loading, onSearch, rows, setRows, limit, setLimit }: CriteriaBuilderProps) {
 
   const addRow = () => setRows(prev => [...prev, emptyRow()])
   const removeRow = (id: number) => setRows(prev => prev.length > 1 ? prev.filter(r => r.id !== id) : prev)
