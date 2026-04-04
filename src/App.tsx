@@ -3,11 +3,13 @@ import { lazy, Suspense } from 'react'
 import LandingPage from './landing/LandingPage'
 
 const ExplorePage = lazy(() => import('./explore/ExplorePage'))
+const SearchPage = lazy(() => import('./search/SearchPage'))
 
 function Nav() {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://aggregateapi-production.up.railway.app'
   const location = useLocation()
   const isExplore = location.pathname === '/explore'
+  const isSearch = location.pathname === '/search'
 
   return (
     <nav className="sticky top-0 z-50 bg-[var(--color-bg-base)]/80 backdrop-blur-2xl border-b border-[var(--color-border)]">
@@ -21,6 +23,7 @@ function Nav() {
           <a href="/#demo" className="hover:text-[var(--color-text)] transition">Demo</a>
           <a href="/#pricing" className="hover:text-[var(--color-text)] transition">Pricing</a>
           <Link to="/explore" className={`hover:text-[var(--color-text)] transition ${isExplore ? 'text-[var(--color-gold)]' : ''}`}>Explore</Link>
+          <Link to="/search" className={`hover:text-[var(--color-text)] transition ${isSearch ? 'text-[var(--color-gold)]' : ''}`}>Search</Link>
           <a href={`${apiBaseUrl}/swagger-ui.html`} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-text)] transition">Docs</a>
           <a href="/#pricing" className="ml-2 rounded-lg bg-[var(--color-gold)] px-5 py-2 font-semibold text-[var(--color-bg-base)] text-[14px] hover:brightness-110 transition">
             Get API Key
@@ -39,6 +42,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Suspense>
     </div>
