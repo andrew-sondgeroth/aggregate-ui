@@ -24,6 +24,7 @@ export default function WidgetProfileView({ data, activeTab }: WidgetProfileView
       {activeTab === 'tax' && <TaxView data={data} />}
       {activeTab === 'crime' && <CrimeView data={data} />}
       {activeTab === 'cost' && <CostView data={data} />}
+      {activeTab === 'voting' && <VotingView data={data} />}
     </div>
   )
 }
@@ -105,6 +106,26 @@ function CostView({ data }: { data: LocationProfileResponse }) {
       <Metric label="Cost Index" value={cost.price_indices.overall.toFixed(1)} sub="100 = national avg" />
       <Metric label="Rent/Income" value={formatPercent(cost.affordability.rent_to_income_ratio)} />
       <Metric label="Utilities" value={formatCurrency(cost.housing_costs.estimated_utility_cost)} sub="monthly est." />
+    </div>
+  )
+}
+
+function VotingView({ data }: { data: LocationProfileResponse }) {
+  const voting = data.voting
+  if (!voting) return <div className="aw-empty">Voting data unavailable</div>
+
+  const ps = voting.partisan_summary
+  const cd = voting.districts.congressional_district
+  return (
+    <div className="aw-grid">
+      <Metric label="Partisan Lean" value={ps.lean_label} sub={`${ps.partisan_lean > 0 ? '+' : ''}${ps.partisan_lean.toFixed(1)}`} />
+      <Metric label="Competitiveness" value={ps.competitive_index.toFixed(1)} sub="0=safe, 100=toss-up" />
+      <Metric label="Congress Dist." value={cd.district_name} sub={`${cd.winner_party}`} />
+      <Metric label="Governor" value={voting.state_officials.governor.name} sub={voting.state_officials.governor.party} />
+      <Metric label="Trifecta" value={voting.state_officials.state_legislature.trifecta} />
+      {voting.presidential_elections[0] && (
+        <Metric label={`${voting.presidential_elections[0].year} Pres.`} value={`D ${formatPercent(voting.presidential_elections[0].dem_pct)} / R ${formatPercent(voting.presidential_elections[0].rep_pct)}`} />
+      )}
     </div>
   )
 }
