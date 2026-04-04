@@ -95,6 +95,17 @@ export default function ProfileSummary({ data }: ProfileSummaryProps) {
       ) : (
         <Section title="Cost of Living"><Unavailable name="Cost" /></Section>
       )}
+
+      {data.voting ? (
+        <Section title="Voting">
+          <ProfileCard label="Partisan Lean" value={data.voting.partisan_summary.lean_label} subtext={`${data.voting.partisan_summary.partisan_lean > 0 ? '+' : ''}${data.voting.partisan_summary.partisan_lean.toFixed(1)}`} />
+          <ProfileCard label="Competitiveness" value={data.voting.partisan_summary.competitive_index.toFixed(1)} subtext="0 = safe, 100 = toss-up" />
+          <ProfileCard label="Governor" value={data.voting.state_officials.governor.name} subtext={data.voting.state_officials.governor.party} />
+          <ProfileCard label="Trifecta" value={data.voting.state_officials.state_legislature.trifecta} />
+        </Section>
+      ) : (
+        <Section title="Voting"><Unavailable name="Voting" /></Section>
+      )}
     </div>
   )
 }

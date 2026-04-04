@@ -8,6 +8,7 @@ export interface LocationProfileResponse {
   tax: TaxProfile | null
   crime: CrimeProfile | null
   cost: CostProfile | null
+  voting: VotingProfile | null
   data_sources: DataSources
 }
 
@@ -17,6 +18,7 @@ export interface DataSources {
   tax: DataSourceStatus
   crime: DataSourceStatus
   cost: DataSourceStatus
+  voting: DataSourceStatus
 }
 
 export interface DataSourceStatus {
@@ -182,6 +184,61 @@ export interface CostProfile {
   affordability: {
     rent_to_income_ratio: number
   }
+}
+
+// --- Voting ---
+
+export interface VotingProfile {
+  state: string
+  presidential_elections: PresidentialElection[]
+  partisan_summary: PartisanSummary
+  districts: DistrictInfo
+  state_officials: StateOfficials
+}
+
+export interface PresidentialElection {
+  year: number
+  dem_pct: number
+  rep_pct: number
+  other_pct: number
+}
+
+export interface PartisanSummary {
+  partisan_lean: number
+  lean_label: string
+  dem_trend: number
+  trend_label: string
+  competitive_index: number
+}
+
+export interface DistrictInfo {
+  congressional_district: CongressionalDistrict
+  state_senate_district: string
+  state_house_district: string
+}
+
+export interface CongressionalDistrict {
+  district_name: string
+  dem_pct: number
+  rep_pct: number
+  winner_party: string
+}
+
+export interface StateOfficials {
+  governor: Official
+  us_senators: Official[]
+  state_legislature: StateLegislature
+}
+
+export interface Official {
+  name: string
+  party: string
+}
+
+export interface StateLegislature {
+  senate_majority: string
+  house_majority: string
+  trifecta: string
 }
 
 // --- Search ---
