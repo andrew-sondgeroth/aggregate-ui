@@ -252,6 +252,7 @@ export interface SearchCriterion {
   field: string
   min?: number
   max?: number
+  level?: string
   weight?: number
 }
 
