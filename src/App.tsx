@@ -5,7 +5,7 @@ import LandingPage from './landing/LandingPage'
 const ExplorePage = lazy(() => import('./explore/ExplorePage'))
 
 function Nav() {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://aggregateapi-production.up.railway.app'
   const location = useLocation()
   const isExplore = location.pathname === '/explore'
 

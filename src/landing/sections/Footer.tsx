@@ -1,5 +1,5 @@
 export default function Footer() {
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://aggregateapi-production.up.railway.app'
 
   return (
     <footer className="py-[80px]">

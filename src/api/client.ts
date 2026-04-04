@@ -1,6 +1,6 @@
 import type { LocationProfileResponse, LocationSearchRequest, LocationSearchResponse, SearchFieldsResponse } from './types'
 
-const DEFAULT_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+const DEFAULT_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://aggregateapi-production.up.railway.app'
 
 export class AggregateApiClient {
   baseUrl: string
