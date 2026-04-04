@@ -1,5 +1,6 @@
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
+import ErrorBoundary from './shared/components/ErrorBoundary'
 import LandingPage from './landing/LandingPage'
 
 const ExplorePage = lazy(() => import('./explore/ExplorePage'))
@@ -38,13 +39,15 @@ export default function App() {
   return (
     <div className="relative z-10">
       <Nav />
-      <Suspense fallback={<div className="flex items-center justify-center h-[calc(100vh-64px)] text-[var(--color-text-dim)]">Loading...</div>}>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/search" element={<SearchPage />} />
-        </Routes>
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<div className="flex items-center justify-center h-[calc(100vh-64px)] text-[var(--color-text-dim)]">Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </div>
   )
 }
