@@ -13,6 +13,7 @@ interface MapViewProps {
 const GOLD = '#f0b429'
 const US_CENTER: [number, number] = [39.8, -98.5]
 const DEFAULT_ZOOM = 4
+const BOUNDARY_STYLE = { color: GOLD, weight: 2, fillColor: GOLD, fillOpacity: 0.15 }
 
 function FitBounds({ geojson }: { geojson: FeatureCollection }) {
   const map = useMap()
@@ -47,12 +48,7 @@ export default function MapView({ geojson, zip, loading }: MapViewProps) {
             <GeoJSON
               key={zip}
               data={geojson}
-              style={{
-                color: GOLD,
-                weight: 2,
-                fillColor: GOLD,
-                fillOpacity: 0.15,
-              }}
+              style={BOUNDARY_STYLE}
             />
             <FitBounds geojson={geojson} />
           </>

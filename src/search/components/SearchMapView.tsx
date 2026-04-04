@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, CircleMarker, Tooltip, GeoJSON, useMap } from 'react-leaflet'
 import type { FeatureCollection } from 'geojson'
 import type { ZipCentroid } from '../../shared/hooks/useZctaCentroids'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, memo } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -17,6 +17,8 @@ const GOLD = '#f0b429'
 const BLUE = '#60a5fa'
 const US_CENTER: [number, number] = [39.8, -98.5]
 const DEFAULT_ZOOM = 4
+const BOUNDARY_STYLE = { color: GOLD, weight: 2, fillColor: GOLD, fillOpacity: 0.15 }
+const TOOLTIP_STYLE = { fontFamily: 'var(--font-mono)', fontSize: '12px' }
 
 function FitMarkers({ centroids }: { centroids: ZipCentroid[] }) {
   const map = useMap()
@@ -32,7 +34,7 @@ function FitMarkers({ centroids }: { centroids: ZipCentroid[] }) {
   return null
 }
 
-export default function SearchMapView({ centroids, scores, selectedZip, boundary, onSelectZip }: SearchMapViewProps) {
+export default memo(function SearchMapView({ centroids, scores, selectedZip, boundary, onSelectZip }: SearchMapViewProps) {
   const maxScore = useMemo(() => {
     let max = 0
     scores.forEach(v => { if (v > max) max = v })
@@ -56,12 +58,7 @@ export default function SearchMapView({ centroids, scores, selectedZip, boundary
           <GeoJSON
             key={`boundary-${selectedZip}`}
             data={boundary}
-            style={{
-              color: GOLD,
-              weight: 2,
-              fillColor: GOLD,
-              fillOpacity: 0.15,
-            }}
+            style={BOUNDARY_STYLE}
           />
         )}
 
@@ -87,9 +84,7 @@ export default function SearchMapView({ centroids, scores, selectedZip, boundary
               }}
             >
               <Tooltip direction="top" offset={[0, -radius]}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
-                  {c.zip} — Score: {score.toFixed(1)}
-                </span>
+                <span style={TOOLTIP_STYLE}>{c.zip} — Score: {score.toFixed(1)}</span>
               </Tooltip>
             </CircleMarker>
           )
@@ -99,4 +94,4 @@ export default function SearchMapView({ centroids, scores, selectedZip, boundary
       </MapContainer>
     </div>
   )
-}
+})

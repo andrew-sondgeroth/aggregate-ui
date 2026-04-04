@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 
 export interface ZipCentroid {
   zip: string
@@ -42,6 +42,7 @@ export function useZctaCentroids(zips: string[]): UseZctaCentroidsResult {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const cache = useRef(new Map<string, ZipCentroid>())
+  const zipsKey = useMemo(() => zips.slice().sort().join(','), [zips])
 
   useEffect(() => {
     if (zips.length === 0) {
@@ -80,7 +81,7 @@ export function useZctaCentroids(zips: string[]): UseZctaCentroidsResult {
       .finally(() => setLoading(false))
 
     return () => controller.abort()
-  }, [zips.join(',')])
+  }, [zipsKey])
 
   return { centroids, loading, error }
 }

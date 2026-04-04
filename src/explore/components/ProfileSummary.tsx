@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import type { LocationProfileResponse } from '../../api/types'
 import ProfileCard from '../../shared/components/ProfileCard'
 import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate } from '../../shared/utils/formatters'
@@ -40,7 +40,7 @@ function Unavailable({ name }: { name: string }) {
   )
 }
 
-export default function ProfileSummary({ data }: ProfileSummaryProps) {
+export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
   return (
     <div>
       {data.area ? (
@@ -110,4 +110,4 @@ export default function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
     </div>
   )
-}
+})
