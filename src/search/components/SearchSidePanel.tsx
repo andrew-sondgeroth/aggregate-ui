@@ -1,6 +1,7 @@
 import type { LocationProfileResponse, LocationSearchResponse, SearchFieldsResponse, SearchCriterion } from '../../api/types'
 import type { CriterionRow } from './CriteriaBuilder'
 import SidePanelContainer, { SkeletonCards } from '../../shared/components/SidePanelContainer'
+import ErrorMessage from '../../shared/components/ErrorMessage'
 import DataSourceBadge from '../../landing/components/DataSourceBadge'
 import ProfileSummary from '../../explore/components/ProfileSummary'
 import CriteriaBuilder from './CriteriaBuilder'
@@ -15,6 +16,7 @@ interface SearchSidePanelProps {
   searchLoading: boolean
   searchError: string | null
   onSearch: (criteria: SearchCriterion[], limit: number) => void
+  onRetrySearch?: () => void
   criteriaRows: CriterionRow[]
   setCriteriaRows: React.Dispatch<React.SetStateAction<CriterionRow[]>>
   criteriaLimit: string
@@ -95,7 +97,7 @@ const TITLES: Record<View, string> = {
 export default function SearchSidePanel(props: SearchSidePanelProps) {
   const {
     view, onViewChange,
-    fields, fieldsLoading, searchLoading, searchError, onSearch,
+    fields, fieldsLoading, searchLoading, searchError, onSearch, onRetrySearch,
     criteriaRows, setCriteriaRows, criteriaLimit, setCriteriaLimit,
     results, selectedZip, onSelectZip,
     profileData, profileLoading,
@@ -123,7 +125,7 @@ export default function SearchSidePanel(props: SearchSidePanelProps) {
           <BackButton onClick={() => onViewChange('search')} label="Back to search" />
 
           {searchError && (
-            <div className="text-[var(--color-red)] text-[14px] mb-3">{searchError}</div>
+            <ErrorMessage message={searchError} onRetry={onRetrySearch} />
           )}
 
           {searchLoading && <SkeletonCards count={3} />}

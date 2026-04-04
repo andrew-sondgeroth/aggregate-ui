@@ -1,6 +1,7 @@
 import type { LocationProfileResponse } from '../../api/types'
 import ZipInput from '../../shared/components/ZipInput'
 import SidePanelContainer, { SkeletonCards } from '../../shared/components/SidePanelContainer'
+import ErrorMessage from '../../shared/components/ErrorMessage'
 import DataSourceBadge from '../../landing/components/DataSourceBadge'
 import ProfileSummary from './ProfileSummary'
 
@@ -9,16 +10,17 @@ interface SidePanelProps {
   loading: boolean
   error: string | null
   onSubmit: (zip: string) => void
+  lastZip?: string | null
 }
 
-export default function SidePanel({ data, loading, error, onSubmit }: SidePanelProps) {
+export default function SidePanel({ data, loading, error, onSubmit, lastZip }: SidePanelProps) {
   return (
     <SidePanelContainer
       title="Explore"
       header={<ZipInput onSubmit={onSubmit} loading={loading} />}
     >
       {error && (
-        <div className="px-5 py-4 text-[var(--color-red)] text-[14px]">{error}</div>
+        <ErrorMessage message={error} onRetry={lastZip ? () => onSubmit(lastZip) : undefined} />
       )}
 
       {loading && !data && <SkeletonCards />}

@@ -1,11 +1,11 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useLocationSearch } from '../shared/hooks/useLocationSearch'
 import { useLocationProfile } from '../shared/hooks/useLocationProfile'
 import { useZctaBoundary } from '../shared/hooks/useZctaBoundary'
 import { useZctaCentroids } from '../shared/hooks/useZctaCentroids'
 import { emptyRow } from './components/CriteriaBuilder'
 import type { CriterionRow } from './components/CriteriaBuilder'
-import type { SearchCriterion } from '../api/types'
+import type { SearchCriterion, LocationSearchRequest } from '../api/types'
 import SearchMapView from './components/SearchMapView'
 import SearchSidePanel from './components/SearchSidePanel'
 
@@ -17,6 +17,7 @@ export default function SearchPage() {
   const [criteriaRows, setCriteriaRows] = useState<CriterionRow[]>([emptyRow()])
   const [criteriaLimit, setCriteriaLimit] = useState('25')
 
+  const lastRequest = useRef<LocationSearchRequest | null>(null)
   const { results, fields, loading: searchLoading, fieldsLoading, error: searchError, search } = useLocationSearch()
   const { data: profileData, loading: profileLoading, fetchProfile } = useLocationProfile()
   const { geojson: boundary } = useZctaBoundary(selectedZip)
@@ -34,9 +35,17 @@ export default function SearchPage() {
   }, [results])
 
   const handleSearch = useCallback(async (criteria: SearchCriterion[], limit: number) => {
-    await search({ criteria, limit })
+    const req = { criteria, limit }
+    lastRequest.current = req
+    await search(req)
     setView('results')
     setSelectedZip(null)
+  }, [search])
+
+  const handleRetrySearch = useCallback(() => {
+    if (lastRequest.current) {
+      search(lastRequest.current)
+    }
   }, [search])
 
   const handleSelectZip = useCallback((zip: string) => {
@@ -69,6 +78,7 @@ export default function SearchPage() {
         searchLoading={searchLoading}
         searchError={searchError}
         onSearch={handleSearch}
+        onRetrySearch={handleRetrySearch}
         criteriaRows={criteriaRows}
         setCriteriaRows={setCriteriaRows}
         criteriaLimit={criteriaLimit}

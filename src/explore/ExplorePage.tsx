@@ -29,6 +29,7 @@ export default function ExplorePage() {
         loading={loading}
         error={error || boundaryError}
         onSubmit={handleSubmit}
+        lastZip={zip}
       />
     </div>
   )
