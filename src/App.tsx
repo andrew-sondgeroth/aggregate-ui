@@ -1,6 +1,7 @@
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import ErrorBoundary from './shared/components/ErrorBoundary'
+import NotFound from './shared/components/NotFound'
 import LandingPage from './landing/LandingPage'
 
 const ExplorePage = lazy(() => import('./explore/ExplorePage'))
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/explore" element={<ExplorePage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
         </main>
