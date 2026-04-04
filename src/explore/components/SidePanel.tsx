@@ -2,7 +2,7 @@ import type { LocationProfileResponse } from '../../api/types'
 import ZipInput from '../../shared/components/ZipInput'
 import SidePanelContainer, { SkeletonCards } from '../../shared/components/SidePanelContainer'
 import ErrorMessage from '../../shared/components/ErrorMessage'
-import DataSourceBadge from '../../landing/components/DataSourceBadge'
+import DataSourceBadge from '../../shared/components/DataSourceBadge'
 import ProfileSummary from './ProfileSummary'
 
 interface SidePanelProps {

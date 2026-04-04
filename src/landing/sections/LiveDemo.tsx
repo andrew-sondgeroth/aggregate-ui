@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLocationProfile } from '../../shared/hooks/useLocationProfile'
 import ZipInput from '../../shared/components/ZipInput'
 import ProfileCard from '../../shared/components/ProfileCard'
-import DataSourceBadge from '../components/DataSourceBadge'
+import DataSourceBadge from '../../shared/components/DataSourceBadge'
 import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate } from '../../shared/utils/formatters'
 import type { LocationProfileResponse } from '../../api/types'
 

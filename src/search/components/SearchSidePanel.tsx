@@ -2,7 +2,7 @@ import type { LocationProfileResponse, LocationSearchResponse, SearchFieldsRespo
 import type { CriterionRow } from './CriteriaBuilder'
 import SidePanelContainer, { SkeletonCards } from '../../shared/components/SidePanelContainer'
 import ErrorMessage from '../../shared/components/ErrorMessage'
-import DataSourceBadge from '../../landing/components/DataSourceBadge'
+import DataSourceBadge from '../../shared/components/DataSourceBadge'
 import ProfileSummary from '../../explore/components/ProfileSummary'
 import CriteriaBuilder from './CriteriaBuilder'
 
