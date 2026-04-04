@@ -13,10 +13,10 @@ function Nav() {
   const isSearch = location.pathname === '/search'
 
   return (
-    <nav className="sticky top-0 z-50 bg-[var(--color-bg-base)]/80 backdrop-blur-2xl border-b border-[var(--color-border)]">
+    <nav className="sticky top-0 z-50 bg-[var(--color-bg-base)]/80 backdrop-blur-2xl border-b border-[var(--color-border)]" aria-label="Main navigation">
       <div style={{ maxWidth: '1080px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '64px', paddingRight: '64px' }} className="h-[64px] flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
-          <span className="h-8 w-8 rounded-lg bg-[var(--color-gold)] flex items-center justify-center text-[var(--color-bg-base)] font-bold text-sm">A</span>
+        <Link to="/" className="flex items-center gap-3" aria-label="Aggregate API home">
+          <span className="h-8 w-8 rounded-lg bg-[var(--color-gold)] flex items-center justify-center text-[var(--color-bg-base)] font-bold text-sm" aria-hidden="true">A</span>
           <span className="font-semibold text-[var(--color-text)] tracking-tight">Aggregate API</span>
         </Link>
         <div className="hidden sm:flex items-center gap-8 text-[14px] text-[var(--color-text-sub)]">
@@ -38,8 +38,10 @@ function Nav() {
 export default function App() {
   return (
     <div className="relative z-10">
+      <a href="#main-content" className="skip-link">Skip to content</a>
       <Nav />
       <ErrorBoundary>
+        <main id="main-content">
         <Suspense fallback={<div className="flex items-center justify-center h-[calc(100vh-64px)] text-[var(--color-text-dim)]">Loading...</div>}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -47,6 +49,7 @@ export default function App() {
             <Route path="/search" element={<SearchPage />} />
           </Routes>
         </Suspense>
+        </main>
       </ErrorBoundary>
     </div>
   )

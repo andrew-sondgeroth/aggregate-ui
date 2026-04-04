@@ -15,9 +15,11 @@ function Section({ title, children, defaultOpen = true }: { title: string; child
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-5 py-3 text-[12px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-sub)] hover:text-[var(--color-text)] transition"
+        aria-expanded={open}
+        aria-label={`${title} section`}
       >
         {title}
-        <svg className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
