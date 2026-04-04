@@ -31,18 +31,18 @@ export class AggregateApiClient {
   }
 
   async getProfile(zip: string): Promise<LocationProfileResponse> {
-    return this.request(`/api/v1/location-profile?zip=${encodeURIComponent(zip)}`)
+    return this.request(`/api/v1/location/profile?zip=${encodeURIComponent(zip)}`)
   }
 
   async search(request: LocationSearchRequest): Promise<LocationSearchResponse> {
-    return this.request('/api/v1/location-search', {
+    return this.request('/api/v1/location/search', {
       method: 'POST',
       body: JSON.stringify(request),
     })
   }
 
   async getSearchFields(): Promise<SearchFieldsResponse> {
-    return this.request('/api/v1/search-fields')
+    return this.request('/api/v1/location/search-fields')
   }
 }
 
