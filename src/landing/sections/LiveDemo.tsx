@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useLocationProfile } from '../../shared/hooks/useLocationProfile'
 import ZipInput from '../../shared/components/ZipInput'
 import ProfileCard from '../../shared/components/ProfileCard'
@@ -75,6 +76,15 @@ export default function LiveDemo() {
             {activeTab === 'Crime' && <CrimeTab data={data} />}
             {activeTab === 'Cost' && <CostTab data={data} />}
             {activeTab === 'Voting' && <VotingTab data={data} />}
+          </div>
+
+          <div className="px-[28px] pb-[20px] flex items-center justify-end gap-4">
+            <Link
+              to={`/explore?zip=${data.zip}`}
+              className="text-[13px] text-[var(--color-text-sub)] hover:text-[var(--color-gold)] transition"
+            >
+              View on map &rarr;
+            </Link>
           </div>
         </div>
       )}
