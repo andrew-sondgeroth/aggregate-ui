@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLocationProfile } from '../shared/hooks/useLocationProfile'
 import WidgetZipInput from './components/WidgetZipInput'
 import WidgetTabs from './components/WidgetTabs'
@@ -19,11 +19,15 @@ export default function AggregateWidgetApp({ config }: { config: WidgetConfig })
   const [activeTab, setActiveTab] = useState(sections[0])
   const { data, loading, error, fetchProfile } = useLocationProfile(config.apiBaseUrl, config.apiKey)
 
+  const didMount = useRef(false)
   useEffect(() => {
-    if (config.defaultZip) {
-      fetchProfile(config.defaultZip)
+    if (!didMount.current) {
+      didMount.current = true
+      if (config.defaultZip) {
+        fetchProfile(config.defaultZip)
+      }
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [config.defaultZip, fetchProfile])
 
   return (
     <div className={`aw-root ${config.theme === 'dark' ? 'aw-dark' : ''}`}>
