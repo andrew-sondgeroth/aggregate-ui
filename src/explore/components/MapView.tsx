@@ -1,6 +1,6 @@
-import { MapContainer, TileLayer, WMSTileLayer, GeoJSON, useMap, useMapEvents, Marker } from 'react-leaflet'
+import { MapContainer, TileLayer, WMSTileLayer, useMap, useMapEvents } from 'react-leaflet'
 import type { FeatureCollection } from 'geojson'
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -14,39 +14,63 @@ interface MapViewProps {
 const GREEN = '#34d399'
 const US_CENTER: [number, number] = [39.8, -98.5]
 const DEFAULT_ZOOM = 4
-const BOUNDARY_STYLE = { color: GREEN, weight: 2, fillColor: GREEN, fillOpacity: 0.15 }
+const BOUNDARY_STYLE: L.PathOptions = { color: GREEN, weight: 2, fillColor: GREEN, fillOpacity: 0.15 }
 const TIGERWEB_BASE = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/1/query'
 const TIGERWEB_WMS = 'https://tigerweb.geo.census.gov/arcgis/services/TIGERweb/tigerWMS_Current/MapServer/WMSServer'
 const ZCTA_BOUNDARY_MIN_ZOOM = 9
 
-function ZipLabel({ zip, geojson }: { zip: string; geojson: FeatureCollection }) {
-  const center = useMemo(() => {
-    const layer = L.geoJSON(geojson)
-    const bounds = layer.getBounds()
-    return bounds.isValid() ? bounds.getCenter() : null
-  }, [geojson])
-
-  const icon = useMemo(() => L.divIcon({
-    className: '',
-    html: `<div style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:${GREEN};text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 2px rgba(0,0,0,0.9);white-space:nowrap;pointer-events:none">${zip}</div>`,
-    iconSize: [0, 0],
-    iconAnchor: [0, 0],
-  }), [zip])
-
-  if (!center) return null
-  return <Marker position={center} icon={icon} interactive={false} />
-}
-
-function FitBounds({ geojson }: { geojson: FeatureCollection }) {
+// Imperative layer management — removes old layers immediately when zip/geojson changes
+function SelectedBoundary({ zip, geojson }: { zip: string | null; geojson: FeatureCollection | null }) {
   const map = useMap()
+  const layerRef = useRef<L.GeoJSON | null>(null)
+  const markerRef = useRef<L.Marker | null>(null)
 
   useEffect(() => {
-    const layer = L.geoJSON(geojson)
+    // Always remove old layers first
+    if (layerRef.current) {
+      map.removeLayer(layerRef.current)
+      layerRef.current = null
+    }
+    if (markerRef.current) {
+      map.removeLayer(markerRef.current)
+      markerRef.current = null
+    }
+
+    if (!zip || !geojson) return
+
+    // Add new boundary layer
+    const layer = L.geoJSON(geojson, { style: BOUNDARY_STYLE })
+    layer.addTo(map)
+    layerRef.current = layer
+
+    // Add zip label at centroid
     const bounds = layer.getBounds()
     if (bounds.isValid()) {
+      const center = bounds.getCenter()
+      const icon = L.divIcon({
+        className: '',
+        html: `<div style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:${GREEN};text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 2px rgba(0,0,0,0.9);white-space:nowrap;pointer-events:none">${zip}</div>`,
+        iconSize: [0, 0],
+        iconAnchor: [0, 0],
+      })
+      const marker = L.marker(center, { icon, interactive: false })
+      marker.addTo(map)
+      markerRef.current = marker
+
       map.flyToBounds(bounds, { padding: [60, 60], maxZoom: 14, duration: 1 })
     }
-  }, [geojson, map])
+
+    return () => {
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current)
+        layerRef.current = null
+      }
+      if (markerRef.current) {
+        map.removeLayer(markerRef.current)
+        markerRef.current = null
+      }
+    }
+  }, [zip, geojson, map])
 
   return null
 }
@@ -75,7 +99,10 @@ function ZctaBoundaryOverlay() {
 }
 
 function MapClickHandler({ onClickZip, onLookupChange }: { onClickZip: (zip: string) => void; onLookupChange: (loading: boolean) => void }) {
+  const activeRequest = useRef(0)
+
   const handleClick = useCallback(async (e: L.LeafletMouseEvent) => {
+    const requestId = ++activeRequest.current
     const { lat, lng } = e.latlng
     onLookupChange(true)
     try {
@@ -89,16 +116,19 @@ function MapClickHandler({ onClickZip, onLookupChange }: { onClickZip: (zip: str
         f: 'json',
       })
       const res = await fetch(`${TIGERWEB_BASE}?${params}`)
-      if (!res.ok) return
+      if (!res.ok || activeRequest.current !== requestId) return
       const data = await res.json()
+      if (activeRequest.current !== requestId) return
       const zcta = data.features?.[0]?.attributes?.ZCTA5
       if (zcta) {
         onClickZip(zcta)
       }
     } catch {
-      // Silently ignore — user can retry by clicking again
+      // Silently ignore
     } finally {
-      onLookupChange(false)
+      if (activeRequest.current === requestId) {
+        onLookupChange(false)
+      }
     }
   }, [onClickZip, onLookupChange])
 
@@ -125,18 +155,7 @@ export default function MapView({ geojson, zip, loading, onClickZip }: MapViewPr
 
         <ZctaBoundaryOverlay />
         <MapClickHandler onClickZip={onClickZip} onLookupChange={setLookingUp} />
-
-        {geojson && zip && (
-          <>
-            <GeoJSON
-              key={zip}
-              data={geojson}
-              style={BOUNDARY_STYLE}
-            />
-            <ZipLabel zip={zip} geojson={geojson} />
-            <FitBounds geojson={geojson} />
-          </>
-        )}
+        <SelectedBoundary zip={zip} geojson={geojson} />
       </MapContainer>
 
       {isLoading && (

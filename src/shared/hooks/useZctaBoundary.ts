@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { FeatureCollection } from 'geojson'
 
 interface UseZctaBoundaryResult {
@@ -14,9 +14,23 @@ export function useZctaBoundary(zip: string | null): UseZctaBoundaryResult {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const cache = useRef(new Map<string, FeatureCollection>())
+  const activeZip = useRef<string | null>(null)
 
-  const fetchBoundary = useCallback(async (zipCode: string, signal: AbortSignal) => {
-    const cached = cache.current.get(zipCode)
+  useEffect(() => {
+    activeZip.current = zip
+
+    if (!zip) {
+      setGeojson(null)
+      setError(null)
+      setLoading(false)
+      return
+    }
+
+    // Immediately clear old boundary to prevent stale display
+    setGeojson(null)
+    setError(null)
+
+    const cached = cache.current.get(zip)
     if (cached) {
       setGeojson(cached)
       setLoading(false)
@@ -24,58 +38,43 @@ export function useZctaBoundary(zip: string | null): UseZctaBoundaryResult {
     }
 
     setLoading(true)
-    setError(null)
-    setGeojson(null)
-
-    try {
-      const params = new URLSearchParams({
-        where: `ZCTA5='${zipCode}'`,
-        outFields: '*',
-        outSR: '4326',
-        f: 'geojson',
-      })
-
-      const res = await fetch(`${TIGERWEB_BASE}?${params}`, {
-        signal,
-      })
-
-      if (!res.ok) {
-        throw new Error('Failed to fetch boundary data')
-      }
-
-      const data: FeatureCollection = await res.json()
-
-      if (!data.features || data.features.length === 0) {
-        throw new Error('No boundary found for this ZIP code')
-      }
-
-      cache.current.set(zipCode, data)
-      setGeojson(data)
-    } catch (err) {
-      if ((err as Error).name === 'AbortError') return
-      setError(err instanceof Error ? err.message : 'Failed to fetch boundary')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!zip) {
-      setGeojson(null)
-      setError(null)
-      return
-    }
-
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), 10000)
 
-    fetchBoundary(zip, controller.signal)
+    const params = new URLSearchParams({
+      where: `ZCTA5='${zip}'`,
+      outFields: 'ZCTA5',
+      outSR: '4326',
+      f: 'geojson',
+    })
+
+    fetch(`${TIGERWEB_BASE}?${params}`, { signal: controller.signal })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch boundary data')
+        return res.json()
+      })
+      .then((data: FeatureCollection) => {
+        if (activeZip.current !== zip) return // Stale response
+        if (!data.features || data.features.length === 0) {
+          throw new Error('No boundary found for this ZIP code')
+        }
+        cache.current.set(zip, data)
+        setGeojson(data)
+      })
+      .catch(err => {
+        if ((err as Error).name === 'AbortError') return
+        if (activeZip.current !== zip) return // Stale error
+        setError(err instanceof Error ? err.message : 'Failed to fetch boundary')
+      })
+      .finally(() => {
+        if (activeZip.current === zip) setLoading(false)
+      })
 
     return () => {
       clearTimeout(timeout)
       controller.abort()
     }
-  }, [zip, fetchBoundary])
+  }, [zip])
 
   return { geojson, loading, error }
 }
