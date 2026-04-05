@@ -67,8 +67,9 @@ function ZctaBoundaryOverlay() {
       layers="77"
       format="image/png"
       transparent
-      opacity={0.35}
+      opacity={0.4}
       minZoom={ZCTA_BOUNDARY_MIN_ZOOM}
+      className="zcta-wms-overlay"
     />
   )
 }

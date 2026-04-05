@@ -130,3 +130,8 @@ body::before {
 .leaflet-control-attribution a {
   color: var(--color-text-sub) !important;
 }
+
+/* Shift WMS ZCTA overlay tiles to gold/yellow */
+.zcta-wms-overlay {
+  filter: hue-rotate(180deg) saturate(2) brightness(1.5);
+}
