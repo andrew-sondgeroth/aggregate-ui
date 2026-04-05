@@ -58,7 +58,7 @@ export class ApiError extends Error {
   }
 }
 
-const DEFAULT_API_KEY = import.meta.env.VITE_DEMO_API_KEY || '37329729-bcfc-43d6-8e1c-eb0d251d1014'
+const DEFAULT_API_KEY = import.meta.env.VITE_DEMO_API_KEY || ''
 
 export const demoClient = new AggregateApiClient(
   DEFAULT_BASE_URL,
