@@ -35,6 +35,12 @@ const features = [
     icon: '🗳',
     items: ['Presidential election history', 'Partisan lean & trends', 'Congressional district results', 'State officials & legislature'],
   },
+  {
+    title: 'Business Activity',
+    accent: 'var(--color-amber)',
+    icon: '🏢',
+    items: ['Total establishments & employees', 'Annual payroll data', 'Industry sector breakdown', 'Top industries by employment'],
+  },
 ]
 
 export default function Features() {

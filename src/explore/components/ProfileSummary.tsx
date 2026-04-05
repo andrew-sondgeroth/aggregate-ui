@@ -14,6 +14,7 @@ const SECTION_ICONS: Record<string, string> = {
   'Crime': 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
   'Cost of Living': 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
   'Voting': 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
+  'Business': 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
 }
 
 function Section({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -126,6 +127,19 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
         </Section>
       ) : (
         <Section title="Voting"><Unavailable name="Voting" /></Section>
+      )}
+
+      {data.business ? (
+        <Section title="Business">
+          <ProfileCard label="Establishments" value={formatNumber(data.business.summary.total_establishments)} tooltip="Total number of business establishments in this ZIP code (Census County Business Patterns)" />
+          <ProfileCard label="Employees" value={formatNumber(data.business.summary.total_employees)} tooltip="Total number of employees across all establishments" />
+          <ProfileCard label="Annual Payroll" value={formatCurrency(data.business.summary.total_annual_payroll)} tooltip="Total annual payroll across all establishments" />
+          {data.business.top_industries?.[0] && (
+            <ProfileCard label="Top Industry" value={data.business.top_industries[0].name} subtext={`${formatNumber(data.business.top_industries[0].employees)} employees`} tooltip="Largest industry by employment in this ZIP code" />
+          )}
+        </Section>
+      ) : (
+        <Section title="Business"><Unavailable name="Business" /></Section>
       )}
     </div>
   )

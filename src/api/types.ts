@@ -9,6 +9,7 @@ export interface LocationProfileResponse {
   crime: CrimeProfile | null
   cost: CostProfile | null
   voting: VotingProfile | null
+  business: BusinessProfile | null
   data_sources: DataSources
 }
 
@@ -19,6 +20,7 @@ export interface DataSources {
   crime: DataSourceStatus
   cost: DataSourceStatus
   voting: DataSourceStatus
+  business: DataSourceStatus
 }
 
 export interface DataSourceStatus {
@@ -239,6 +241,37 @@ export interface StateLegislature {
   senate_majority: string
   house_majority: string
   trifecta: string
+}
+
+// --- Business ---
+
+export interface BusinessProfile {
+  summary: BusinessSummary
+  sectors: SectorData[]
+  top_industries: SubsectorData[]
+}
+
+export interface BusinessSummary {
+  total_establishments: number
+  total_employees: number
+  total_annual_payroll: number
+}
+
+export interface SectorData {
+  code: string
+  name: string
+  establishments: number
+  employees: number
+  payroll: number
+  subsectors: SubsectorData[]
+}
+
+export interface SubsectorData {
+  code: string
+  name: string
+  establishments: number
+  employees: number
+  payroll: number
 }
 
 // --- Search ---

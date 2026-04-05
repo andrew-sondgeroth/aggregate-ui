@@ -7,7 +7,7 @@ import DataSourceBadge from '../../shared/components/DataSourceBadge'
 import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate, safeFixed } from '../../shared/utils/formatters'
 import type { LocationProfileResponse } from '../../api/types'
 
-const TABS = ['Area', 'Climate', 'Tax', 'Crime', 'Cost', 'Voting'] as const
+const TABS = ['Area', 'Climate', 'Tax', 'Crime', 'Cost', 'Voting', 'Business'] as const
 type Tab = (typeof TABS)[number]
 
 export default function LiveDemo() {
@@ -76,6 +76,7 @@ export default function LiveDemo() {
             {activeTab === 'Crime' && <CrimeTab data={data} />}
             {activeTab === 'Cost' && <CostTab data={data} />}
             {activeTab === 'Voting' && <VotingTab data={data} />}
+            {activeTab === 'Business' && <BusinessTab data={data} />}
           </div>
 
           <div className="px-[28px] pb-[20px] flex items-center justify-end gap-4">
@@ -216,6 +217,23 @@ function VotingTab({ data }: { data: LocationProfileResponse }) {
         ))}
         <ProfileCard label="Governor" value={voting.state_officials?.governor?.name ?? 'N/A'} subtext={voting.state_officials?.governor?.party} tooltip="Current state governor and political party" />
         <ProfileCard label="Trifecta" value={voting.state_officials?.state_legislature?.trifecta ?? 'N/A'} tooltip="Whether one party controls the governorship and both legislative chambers" />
+      </div>
+    </div>
+  )
+}
+
+function BusinessTab({ data }: { data: LocationProfileResponse }) {
+  const biz = data.business
+  if (!biz) return <Unavailable name="Business" />
+  return (
+    <div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
+        <ProfileCard label="Establishments" value={formatNumber(biz.summary.total_establishments)} tooltip="Total business establishments (Census CBP)" />
+        <ProfileCard label="Employees" value={formatNumber(biz.summary.total_employees)} tooltip="Total employees across all establishments" />
+        <ProfileCard label="Annual Payroll" value={formatCurrency(biz.summary.total_annual_payroll)} tooltip="Total annual payroll across all establishments" />
+        {biz.top_industries?.slice(0, 5).map(ind => (
+          <ProfileCard key={ind.code} label={ind.name} value={formatNumber(ind.employees)} subtext={`${formatNumber(ind.establishments)} establishments`} tooltip={`NAICS ${ind.code} — ${formatCurrency(ind.payroll)} annual payroll`} />
+        ))}
       </div>
     </div>
   )

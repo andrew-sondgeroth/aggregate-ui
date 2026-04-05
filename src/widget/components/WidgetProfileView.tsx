@@ -25,6 +25,7 @@ export default function WidgetProfileView({ data, activeTab }: WidgetProfileView
       {activeTab === 'crime' && <CrimeView data={data} />}
       {activeTab === 'cost' && <CostView data={data} />}
       {activeTab === 'voting' && <VotingView data={data} />}
+      {activeTab === 'business' && <BusinessView data={data} />}
     </div>
   )
 }
@@ -126,6 +127,22 @@ function VotingView({ data }: { data: LocationProfileResponse }) {
       {voting.presidential_elections?.[0] && (
         <Metric label={`${voting.presidential_elections[0].year} Pres.`} value={`D ${formatPercent(voting.presidential_elections[0].dem_pct)} / R ${formatPercent(voting.presidential_elections[0].rep_pct)}`} />
       )}
+    </div>
+  )
+}
+
+function BusinessView({ data }: { data: LocationProfileResponse }) {
+  const biz = data.business
+  if (!biz) return <div className="aw-empty">Business data unavailable</div>
+
+  return (
+    <div className="aw-grid">
+      <Metric label="Establishments" value={formatNumber(biz.summary.total_establishments)} tooltip="Total business establishments" />
+      <Metric label="Employees" value={formatNumber(biz.summary.total_employees)} tooltip="Total employees" />
+      <Metric label="Annual Payroll" value={formatCurrency(biz.summary.total_annual_payroll)} tooltip="Total annual payroll" />
+      {biz.top_industries?.slice(0, 3).map(ind => (
+        <Metric key={ind.code} label={ind.name} value={formatNumber(ind.employees)} sub={`${formatNumber(ind.establishments)} estab.`} tooltip={`NAICS ${ind.code}`} />
+      ))}
     </div>
   )
 }
