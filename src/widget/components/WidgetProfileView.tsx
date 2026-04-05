@@ -40,7 +40,7 @@ function AreaView({ data }: { data: LocationProfileResponse }) {
       <Metric label="Home Value" value={formatCurrency(area.housing.median_home_value)} />
       <Metric label="Unemployment" value={formatPercent(area.economic.unemployment_rate)} />
       <Metric label="Bachelor's+" value={formatPercent(area.education.bachelors_or_higher_percent)} />
-      <Metric label="Risk Score" value={area.community_risk.risk_tier} sub={`${area.community_risk.risk_score.toFixed(0)}/100`} />
+      <Metric label="Risk Score" value={area.community_risk.risk_tier} sub={`${safeFixed(area.community_risk.risk_score, 0)}/100`} />
     </div>
   )
 }
@@ -55,8 +55,8 @@ function ClimateView({ data }: { data: LocationProfileResponse }) {
       <Metric label="Avg Temp" value={formatTemp(a.avg_temp)} />
       <Metric label="Summer High" value={formatTemp(a.summer_avg_high)} />
       <Metric label="Winter Low" value={formatTemp(a.winter_avg_low)} />
-      <Metric label="Precipitation" value={`${a.total_precipitation.toFixed(1)}"`} />
-      <Metric label="Snowfall" value={`${a.total_snowfall.toFixed(1)}"`} />
+      <Metric label="Precipitation" value={`${safeFixed(a.total_precipitation)}"`} />
+      <Metric label="Snowfall" value={`${safeFixed(a.total_snowfall)}"`} />
       <Metric label="Frost-Free Days" value={String(a.frost_free_days)} />
     </div>
   )

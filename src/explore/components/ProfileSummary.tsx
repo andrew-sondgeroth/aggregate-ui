@@ -46,7 +46,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       {data.area ? (
         <Section title="Area">
           <ProfileCard label="Population" value={formatNumber(data.area.population.total_population)} />
-          <ProfileCard label="Median Age" value={data.area.demographics.median_age.toFixed(1)} />
+          <ProfileCard label="Median Age" value={safeFixed(data.area.demographics.median_age)} />
           <ProfileCard label="Median Income" value={formatCurrency(data.area.economic.median_household_income)} />
           <ProfileCard label="Home Value" value={formatCurrency(data.area.housing.median_home_value)} />
         </Section>
@@ -59,7 +59,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
           <ProfileCard label="Avg Temp" value={formatTemp(data.climate.annual_summary.avg_temp)} />
           <ProfileCard label="Summer High" value={formatTemp(data.climate.annual_summary.summer_avg_high)} />
           <ProfileCard label="Winter Low" value={formatTemp(data.climate.annual_summary.winter_avg_low)} />
-          <ProfileCard label="Annual Precip" value={`${data.climate.annual_summary.total_precipitation.toFixed(1)}"`} />
+          <ProfileCard label="Annual Precip" value={`${safeFixed(data.climate.annual_summary.total_precipitation)}"`} />
         </Section>
       ) : (
         <Section title="Climate"><Unavailable name="Weather" /></Section>

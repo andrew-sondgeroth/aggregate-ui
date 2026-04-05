@@ -98,7 +98,7 @@ function AreaTab({ data }: { data: LocationProfileResponse }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
       <ProfileCard label="Population" value={formatNumber(area.population.total_population)} />
-      <ProfileCard label="Median Age" value={area.demographics.median_age.toFixed(1)} />
+      <ProfileCard label="Median Age" value={safeFixed(area.demographics.median_age)} />
       <ProfileCard label="Median Income" value={formatCurrency(area.economic.median_household_income)} />
       <ProfileCard label="Home Value" value={formatCurrency(area.housing.median_home_value)} />
       <ProfileCard label="Median Rent" value={formatCurrency(area.housing.median_gross_rent)} />
@@ -107,8 +107,8 @@ function AreaTab({ data }: { data: LocationProfileResponse }) {
       <ProfileCard label="Owner Occupied" value={formatPercent(area.housing.owner_occupied_percent)} />
       <ProfileCard label="Broadband" value={formatPercent(area.internet_access.broadband_percent)} />
       <ProfileCard label="Work From Home" value={formatPercent(area.economic.work_from_home_percent)} />
-      <ProfileCard label="Gini Index" value={area.income_distribution.gini_index.toFixed(4)} subtext="Income inequality" />
-      <ProfileCard label="Community Risk" value={area.community_risk.risk_tier} subtext={`Score: ${area.community_risk.risk_score.toFixed(1)}/100`} />
+      <ProfileCard label="Gini Index" value={safeFixed(area.income_distribution.gini_index, 4)} subtext="Income inequality" />
+      <ProfileCard label="Community Risk" value={area.community_risk.risk_tier} subtext={`Score: ${safeFixed(area.community_risk.risk_score)}/100`} />
     </div>
   )
 }
@@ -120,15 +120,15 @@ function ClimateTab({ data }: { data: LocationProfileResponse }) {
   return (
     <div>
       <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">
-        Station: {climate.nearest_station.name} ({climate.nearest_station.distance_miles.toFixed(1)} mi)
+        Station: {climate.nearest_station.name} ({safeFixed(climate.nearest_station.distance_miles)} mi)
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
         <ProfileCard label="Avg Temperature" value={formatTemp(annual.avg_temp)} />
         <ProfileCard label="Summer Avg High" value={formatTemp(annual.summer_avg_high)} />
         <ProfileCard label="Winter Avg Low" value={formatTemp(annual.winter_avg_low)} />
         <ProfileCard label="Temp Range" value={formatTemp(annual.temp_range)} />
-        <ProfileCard label="Annual Precip" value={`${annual.total_precipitation.toFixed(1)}"`} />
-        <ProfileCard label="Annual Snowfall" value={`${annual.total_snowfall.toFixed(1)}"`} />
+        <ProfileCard label="Annual Precip" value={`${safeFixed(annual.total_precipitation)}"`} />
+        <ProfileCard label="Annual Snowfall" value={`${safeFixed(annual.total_snowfall)}"`} />
         <ProfileCard label="Frost-Free Days" value={formatNumber(annual.frost_free_days)} />
         <ProfileCard label="Cooling Degree Days" value={formatNumber(annual.cooling_degree_days)} />
       </div>
