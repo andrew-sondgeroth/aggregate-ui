@@ -1,6 +1,6 @@
-import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents, Marker } from 'react-leaflet'
 import type { FeatureCollection } from 'geojson'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -16,6 +16,24 @@ const US_CENTER: [number, number] = [39.8, -98.5]
 const DEFAULT_ZOOM = 4
 const BOUNDARY_STYLE = { color: GOLD, weight: 2, fillColor: GOLD, fillOpacity: 0.15 }
 const TIGERWEB_BASE = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/1/query'
+
+function ZipLabel({ zip, geojson }: { zip: string; geojson: FeatureCollection }) {
+  const center = useMemo(() => {
+    const layer = L.geoJSON(geojson)
+    const bounds = layer.getBounds()
+    return bounds.isValid() ? bounds.getCenter() : null
+  }, [geojson])
+
+  const icon = useMemo(() => L.divIcon({
+    className: '',
+    html: `<div style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:${GOLD};text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 2px rgba(0,0,0,0.9);white-space:nowrap;pointer-events:none">${zip}</div>`,
+    iconSize: [0, 0],
+    iconAnchor: [0, 0],
+  }), [zip])
+
+  if (!center) return null
+  return <Marker position={center} icon={icon} interactive={false} />
+}
 
 function FitBounds({ geojson }: { geojson: FeatureCollection }) {
   const map = useMap()
@@ -82,13 +100,14 @@ export default function MapView({ geojson, zip, loading, onClickZip }: MapViewPr
 
         <MapClickHandler onClickZip={onClickZip} onLookupChange={setLookingUp} />
 
-        {geojson && (
+        {geojson && zip && (
           <>
             <GeoJSON
               key={zip}
               data={geojson}
               style={BOUNDARY_STYLE}
             />
+            <ZipLabel zip={zip} geojson={geojson} />
             <FitBounds geojson={geojson} />
           </>
         )}
