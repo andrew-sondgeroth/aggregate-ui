@@ -97,18 +97,18 @@ function AreaTab({ data }: { data: LocationProfileResponse }) {
   if (!area) return <Unavailable name="Census" />
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
-      <ProfileCard label="Population" value={formatNumber(area.population.total_population)} />
-      <ProfileCard label="Median Age" value={safeFixed(area.demographics.median_age)} />
-      <ProfileCard label="Median Income" value={formatCurrency(area.economic.median_household_income)} />
-      <ProfileCard label="Home Value" value={formatCurrency(area.housing.median_home_value)} />
-      <ProfileCard label="Median Rent" value={formatCurrency(area.housing.median_gross_rent)} />
-      <ProfileCard label="Unemployment" value={formatPercent(area.economic.unemployment_rate)} />
-      <ProfileCard label="Bachelor's+" value={formatPercent(area.education.bachelors_or_higher_percent)} />
-      <ProfileCard label="Owner Occupied" value={formatPercent(area.housing.owner_occupied_percent)} />
-      <ProfileCard label="Broadband" value={formatPercent(area.internet_access.broadband_percent)} />
-      <ProfileCard label="Work From Home" value={formatPercent(area.economic.work_from_home_percent)} />
-      <ProfileCard label="Gini Index" value={safeFixed(area.income_distribution.gini_index, 4)} subtext="Income inequality" />
-      <ProfileCard label="Community Risk" value={area.community_risk.risk_tier} subtext={`Score: ${safeFixed(area.community_risk.risk_score)}/100`} />
+      <ProfileCard label="Population" value={formatNumber(area.population.total_population)} tooltip="Total number of people living in this ZIP code area" />
+      <ProfileCard label="Median Age" value={safeFixed(area.demographics.median_age)} tooltip="Half the population is older and half is younger than this age" />
+      <ProfileCard label="Median Income" value={formatCurrency(area.economic.median_household_income)} tooltip="Median annual household income — half earn more, half earn less" />
+      <ProfileCard label="Home Value" value={formatCurrency(area.housing.median_home_value)} tooltip="Median value of owner-occupied housing units" />
+      <ProfileCard label="Median Rent" value={formatCurrency(area.housing.median_gross_rent)} tooltip="Median monthly gross rent including utilities" />
+      <ProfileCard label="Unemployment" value={formatPercent(area.economic.unemployment_rate)} tooltip="Percentage of the labor force that is unemployed and seeking work" />
+      <ProfileCard label="Bachelor's+" value={formatPercent(area.education.bachelors_or_higher_percent)} tooltip="Percentage of adults 25+ with a bachelor's degree or higher" />
+      <ProfileCard label="Owner Occupied" value={formatPercent(area.housing.owner_occupied_percent)} tooltip="Percentage of housing units that are owner-occupied (vs. rented)" />
+      <ProfileCard label="Broadband" value={formatPercent(area.internet_access.broadband_percent)} tooltip="Percentage of households with a broadband internet subscription" />
+      <ProfileCard label="Work From Home" value={formatPercent(area.economic.work_from_home_percent)} tooltip="Percentage of workers who primarily work from home" />
+      <ProfileCard label="Gini Index" value={safeFixed(area.income_distribution.gini_index, 4)} subtext="Income inequality" tooltip="Income inequality measure: 0 = perfectly equal, 1 = one person has all income" />
+      <ProfileCard label="Community Risk" value={area.community_risk.risk_tier} subtext={`Score: ${safeFixed(area.community_risk.risk_score)}/100`} tooltip="Composite risk score based on poverty, unemployment, housing burden, and other socioeconomic factors" />
     </div>
   )
 }
@@ -123,14 +123,14 @@ function ClimateTab({ data }: { data: LocationProfileResponse }) {
         Station: {climate.nearest_station.name} ({safeFixed(climate.nearest_station.distance_miles)} mi)
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
-        <ProfileCard label="Avg Temperature" value={formatTemp(annual.avg_temp)} />
-        <ProfileCard label="Summer Avg High" value={formatTemp(annual.summer_avg_high)} />
-        <ProfileCard label="Winter Avg Low" value={formatTemp(annual.winter_avg_low)} />
-        <ProfileCard label="Temp Range" value={formatTemp(annual.temp_range)} />
-        <ProfileCard label="Annual Precip" value={`${safeFixed(annual.total_precipitation)}"`} />
-        <ProfileCard label="Annual Snowfall" value={`${safeFixed(annual.total_snowfall)}"`} />
-        <ProfileCard label="Frost-Free Days" value={formatNumber(annual.frost_free_days)} />
-        <ProfileCard label="Cooling Degree Days" value={formatNumber(annual.cooling_degree_days)} />
+        <ProfileCard label="Avg Temperature" value={formatTemp(annual.avg_temp)} tooltip="Average annual temperature from 30-year climate normals" />
+        <ProfileCard label="Summer Avg High" value={formatTemp(annual.summer_avg_high)} tooltip="Average daily high in June, July, and August" />
+        <ProfileCard label="Winter Avg Low" value={formatTemp(annual.winter_avg_low)} tooltip="Average daily low in December, January, and February" />
+        <ProfileCard label="Temp Range" value={formatTemp(annual.temp_range)} tooltip="Difference between the average daily high and low temperatures" />
+        <ProfileCard label="Annual Precip" value={`${safeFixed(annual.total_precipitation)}"`} tooltip="Total annual rainfall plus melted snow in inches" />
+        <ProfileCard label="Annual Snowfall" value={`${safeFixed(annual.total_snowfall)}"`} tooltip="Total annual snowfall in inches" />
+        <ProfileCard label="Frost-Free Days" value={formatNumber(annual.frost_free_days)} tooltip="Number of days per year without freezing temperatures" />
+        <ProfileCard label="Cooling Degree Days" value={formatNumber(annual.cooling_degree_days)} tooltip="Measure of how much cooling is needed — higher means hotter summers" />
       </div>
     </div>
   )
@@ -143,14 +143,14 @@ function TaxTab({ data }: { data: LocationProfileResponse }) {
     <div>
       <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {tax.state}</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
-        <ProfileCard label="Combined Sales Tax" value={formatPercent(tax.sales_tax.combined_rate)} />
-        <ProfileCard label="State Sales Tax" value={formatPercent(tax.sales_tax.state_rate)} />
-        <ProfileCard label="Has Income Tax" value={tax.state_income_tax.has_state_income_tax ? 'Yes' : 'No'} />
-        <ProfileCard label="Top Marginal Rate" value={formatPercent(tax.state_income_tax.top_marginal_rate)} />
-        <ProfileCard label="Gas Tax" value={`${tax.excise_tax.gas_tax_cents_per_gallon}¢/gal`} />
-        <ProfileCard label="Has Estate Tax" value={tax.excise_tax.has_estate_tax ? 'Yes' : 'No'} />
-        <ProfileCard label="Avg AGI" value={formatCurrency(tax.irs_income_stats?.avg_agi)} />
-        <ProfileCard label="Effective Fed Rate" value={formatPercent(tax.irs_income_stats?.effective_federal_rate)} />
+        <ProfileCard label="Combined Sales Tax" value={formatPercent(tax.sales_tax.combined_rate)} tooltip="Total sales tax rate including state, county, and city components" />
+        <ProfileCard label="State Sales Tax" value={formatPercent(tax.sales_tax.state_rate)} tooltip="State-level sales tax rate before local additions" />
+        <ProfileCard label="Has Income Tax" value={tax.state_income_tax.has_state_income_tax ? 'Yes' : 'No'} tooltip="Whether this state levies a personal income tax" />
+        <ProfileCard label="Top Marginal Rate" value={formatPercent(tax.state_income_tax.top_marginal_rate)} tooltip="Highest marginal state income tax bracket rate" />
+        <ProfileCard label="Gas Tax" value={`${tax.excise_tax.gas_tax_cents_per_gallon}¢/gal`} tooltip="State excise tax on gasoline in cents per gallon" />
+        <ProfileCard label="Has Estate Tax" value={tax.excise_tax.has_estate_tax ? 'Yes' : 'No'} tooltip="Whether this state levies an estate or inheritance tax" />
+        <ProfileCard label="Avg AGI" value={formatCurrency(tax.irs_income_stats?.avg_agi)} tooltip="Average adjusted gross income from IRS returns in this ZIP code" />
+        <ProfileCard label="Effective Fed Rate" value={formatPercent(tax.irs_income_stats?.effective_federal_rate)} tooltip="Average effective federal tax rate — total tax paid / AGI" />
       </div>
     </div>
   )
@@ -165,14 +165,14 @@ function CrimeTab({ data }: { data: LocationProfileResponse }) {
         {crime.state} — {crime.data_year} data | Population: {formatNumber(crime.summary.population)}
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
-        <ProfileCard label="Total Crime Rate" value={formatRate(crime.summary.total_crime_rate)} subtext="per 100k" />
-        <ProfileCard label="Violent Crime" value={formatRate(crime.violent_crime.violent_crime_rate)} subtext="per 100k" />
-        <ProfileCard label="Property Crime" value={formatRate(crime.property_crime.property_crime_rate)} subtext="per 100k" />
-        <ProfileCard label="Murder" value={formatRate(crime.violent_crime.murder_rate)} subtext="per 100k" />
-        <ProfileCard label="Robbery" value={formatRate(crime.violent_crime.robbery_rate)} subtext="per 100k" />
-        <ProfileCard label="Burglary" value={formatRate(crime.property_crime.burglary_rate)} subtext="per 100k" />
-        <ProfileCard label="Larceny" value={formatRate(crime.property_crime.larceny_rate)} subtext="per 100k" />
-        <ProfileCard label="Vehicle Theft" value={formatRate(crime.property_crime.motor_vehicle_theft_rate)} subtext="per 100k" />
+        <ProfileCard label="Total Crime Rate" value={formatRate(crime.summary.total_crime_rate)} subtext="per 100k" tooltip="Combined violent + property crime incidents per 100,000 people" />
+        <ProfileCard label="Violent Crime" value={formatRate(crime.violent_crime.violent_crime_rate)} subtext="per 100k" tooltip="Murder, rape, robbery, and aggravated assault per 100,000 people" />
+        <ProfileCard label="Property Crime" value={formatRate(crime.property_crime.property_crime_rate)} subtext="per 100k" tooltip="Burglary, larceny-theft, and motor vehicle theft per 100,000 people" />
+        <ProfileCard label="Murder" value={formatRate(crime.violent_crime.murder_rate)} subtext="per 100k" tooltip="Murder and non-negligent manslaughter per 100,000 people" />
+        <ProfileCard label="Robbery" value={formatRate(crime.violent_crime.robbery_rate)} subtext="per 100k" tooltip="Taking property by force or threat of force per 100,000 people" />
+        <ProfileCard label="Burglary" value={formatRate(crime.property_crime.burglary_rate)} subtext="per 100k" tooltip="Unlawful entry to commit theft or felony per 100,000 people" />
+        <ProfileCard label="Larceny" value={formatRate(crime.property_crime.larceny_rate)} subtext="per 100k" tooltip="Theft of property without force or breaking in per 100,000 people" />
+        <ProfileCard label="Vehicle Theft" value={formatRate(crime.property_crime.motor_vehicle_theft_rate)} subtext="per 100k" tooltip="Theft or attempted theft of a motor vehicle per 100,000 people" />
       </div>
     </div>
   )
@@ -185,14 +185,14 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
     <div>
       <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {cost.state}</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
-        <ProfileCard label="Median Rent" value={formatCurrency(cost.housing_costs.median_gross_rent)} />
-        <ProfileCard label="Home Value" value={formatCurrency(cost.housing_costs.median_home_value)} />
-        <ProfileCard label="Monthly Housing" value={formatCurrency(cost.housing_costs.median_monthly_housing_cost)} />
-        <ProfileCard label="Utilities" value={formatCurrency(cost.housing_costs.estimated_utility_cost)} subtext="estimated monthly" />
-        <ProfileCard label="FMR 1-Bed" value={formatCurrency(cost.fair_market_rents.one_bedroom)} subtext="fair market rent" />
-        <ProfileCard label="FMR 2-Bed" value={formatCurrency(cost.fair_market_rents.two_bedroom)} subtext="fair market rent" />
-        <ProfileCard label="Cost Index" value={safeFixed(cost.price_indices?.overall)} subtext="100 = national avg" />
-        <ProfileCard label="Rent/Income" value={formatPercent(cost.affordability?.rent_to_income_ratio)} />
+        <ProfileCard label="Median Rent" value={formatCurrency(cost.housing_costs.median_gross_rent)} tooltip="Median monthly gross rent including utilities" />
+        <ProfileCard label="Home Value" value={formatCurrency(cost.housing_costs.median_home_value)} tooltip="Median value of owner-occupied housing units" />
+        <ProfileCard label="Monthly Housing" value={formatCurrency(cost.housing_costs.median_monthly_housing_cost)} tooltip="Median monthly housing cost for all occupied units" />
+        <ProfileCard label="Utilities" value={formatCurrency(cost.housing_costs.estimated_utility_cost)} subtext="estimated monthly" tooltip="Estimated monthly utility costs (electric, gas, water)" />
+        <ProfileCard label="FMR 1-Bed" value={formatCurrency(cost.fair_market_rents.one_bedroom)} subtext="fair market rent" tooltip="HUD Fair Market Rent for a 1-bedroom unit — used for housing voucher programs" />
+        <ProfileCard label="FMR 2-Bed" value={formatCurrency(cost.fair_market_rents.two_bedroom)} subtext="fair market rent" tooltip="HUD Fair Market Rent for a 2-bedroom unit" />
+        <ProfileCard label="Cost Index" value={safeFixed(cost.price_indices?.overall)} subtext="100 = national avg" tooltip="Regional price parity — 100 is the national average. Higher = more expensive area." />
+        <ProfileCard label="Rent/Income" value={formatPercent(cost.affordability?.rent_to_income_ratio)} tooltip="Annual rent as a ratio of average AGI — lower is more affordable" />
       </div>
     </div>
   )
@@ -207,15 +207,15 @@ function VotingTab({ data }: { data: LocationProfileResponse }) {
     <div>
       <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {voting.state}</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
-        <ProfileCard label="Partisan Lean" value={ps?.lean_label ?? 'N/A'} subtext={ps ? `${ps.partisan_lean > 0 ? '+' : ''}${ps.partisan_lean.toFixed(1)}` : undefined} />
-        <ProfileCard label="Trend" value={ps?.trend_label ?? 'N/A'} subtext={ps ? `${ps.dem_trend > 0 ? '+' : ''}${ps.dem_trend.toFixed(1)} Dem shift` : undefined} />
-        <ProfileCard label="Competitiveness" value={safeFixed(ps?.competitive_index)} subtext="0 = safe, 100 = toss-up" />
-        {cd && <ProfileCard label="Congress District" value={cd.district_name} subtext={`${cd.winner_party} (D ${formatPercent(cd.dem_pct)} / R ${formatPercent(cd.rep_pct)})`} />}
+        <ProfileCard label="Partisan Lean" value={ps?.lean_label ?? 'N/A'} subtext={ps ? `${ps.partisan_lean > 0 ? '+' : ''}${ps.partisan_lean.toFixed(1)}` : undefined} tooltip="Average partisan lean across recent presidential elections. Positive = Democratic, negative = Republican." />
+        <ProfileCard label="Trend" value={ps?.trend_label ?? 'N/A'} subtext={ps ? `${ps.dem_trend > 0 ? '+' : ''}${ps.dem_trend.toFixed(1)} Dem shift` : undefined} tooltip="Direction and magnitude of partisan shift across recent elections" />
+        <ProfileCard label="Competitiveness" value={safeFixed(ps?.competitive_index)} subtext="0 = safe, 100 = toss-up" tooltip="How competitive elections are — 100 = perfectly split, 0 = one party dominates" />
+        {cd && <ProfileCard label="Congress District" value={cd.district_name} subtext={`${cd.winner_party} (D ${formatPercent(cd.dem_pct)} / R ${formatPercent(cd.rep_pct)})`} tooltip="Congressional district and most recent election results" />}
         {voting.presidential_elections?.slice(0, 2).map(e => (
-          <ProfileCard key={e.year} label={`${e.year} Presidential`} value={`D ${formatPercent(e.dem_pct)} / R ${formatPercent(e.rep_pct)}`} />
+          <ProfileCard key={e.year} label={`${e.year} Presidential`} value={`D ${formatPercent(e.dem_pct)} / R ${formatPercent(e.rep_pct)}`} tooltip={`Presidential election vote share in ${e.year}`} />
         ))}
-        <ProfileCard label="Governor" value={voting.state_officials?.governor?.name ?? 'N/A'} subtext={voting.state_officials?.governor?.party} />
-        <ProfileCard label="Trifecta" value={voting.state_officials?.state_legislature?.trifecta ?? 'N/A'} />
+        <ProfileCard label="Governor" value={voting.state_officials?.governor?.name ?? 'N/A'} subtext={voting.state_officials?.governor?.party} tooltip="Current state governor and political party" />
+        <ProfileCard label="Trifecta" value={voting.state_officials?.state_legislature?.trifecta ?? 'N/A'} tooltip="Whether one party controls the governorship and both legislative chambers" />
       </div>
     </div>
   )
