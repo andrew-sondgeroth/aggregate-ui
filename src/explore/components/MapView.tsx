@@ -62,24 +62,14 @@ function ZctaBoundaryOverlay() {
   if (!visible) return null
 
   return (
-    <>
-      <WMSTileLayer
-        url={TIGERWEB_WMS}
-        layers="77"
-        format="image/png"
-        transparent
-        opacity={0.35}
-        minZoom={ZCTA_BOUNDARY_MIN_ZOOM}
-      />
-      <WMSTileLayer
-        url={TIGERWEB_WMS}
-        layers="76"
-        format="image/png"
-        transparent
-        opacity={0.6}
-        minZoom={ZCTA_BOUNDARY_MIN_ZOOM + 1}
-      />
-    </>
+    <WMSTileLayer
+      url={TIGERWEB_WMS}
+      layers="77"
+      format="image/png"
+      transparent
+      opacity={0.35}
+      minZoom={ZCTA_BOUNDARY_MIN_ZOOM}
+    />
   )
 }
 
