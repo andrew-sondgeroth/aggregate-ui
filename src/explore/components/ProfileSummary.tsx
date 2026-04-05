@@ -1,7 +1,7 @@
 import { useState, memo } from 'react'
 import type { LocationProfileResponse } from '../../api/types'
 import ProfileCard from '../../shared/components/ProfileCard'
-import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate } from '../../shared/utils/formatters'
+import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate, safeFixed } from '../../shared/utils/formatters'
 
 interface ProfileSummaryProps {
   data: LocationProfileResponse
@@ -69,8 +69,8 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
         <Section title="Tax">
           <ProfileCard label="Sales Tax" value={formatPercent(data.tax.sales_tax.combined_rate)} />
           <ProfileCard label="Top Income Rate" value={formatPercent(data.tax.state_income_tax.top_marginal_rate)} />
-          <ProfileCard label="Avg AGI" value={formatCurrency(data.tax.irs_income_stats.avg_agi)} />
-          <ProfileCard label="Eff. Fed Rate" value={formatPercent(data.tax.irs_income_stats.effective_federal_rate)} />
+          <ProfileCard label="Avg AGI" value={formatCurrency(data.tax.irs_income_stats?.avg_agi)} />
+          <ProfileCard label="Eff. Fed Rate" value={formatPercent(data.tax.irs_income_stats?.effective_federal_rate)} />
         </Section>
       ) : (
         <Section title="Tax"><Unavailable name="Tax" /></Section>
@@ -89,10 +89,10 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
 
       {data.cost ? (
         <Section title="Cost of Living">
-          <ProfileCard label="Cost Index" value={data.cost.price_indices.overall.toFixed(1)} subtext="100 = national avg" />
+          <ProfileCard label="Cost Index" value={safeFixed(data.cost.price_indices?.overall)} subtext="100 = national avg" />
           <ProfileCard label="Median Rent" value={formatCurrency(data.cost.housing_costs.median_gross_rent)} />
           <ProfileCard label="Home Value" value={formatCurrency(data.cost.housing_costs.median_home_value)} />
-          <ProfileCard label="Rent/Income" value={formatPercent(data.cost.affordability.rent_to_income_ratio)} />
+          <ProfileCard label="Rent/Income" value={formatPercent(data.cost.affordability?.rent_to_income_ratio)} />
         </Section>
       ) : (
         <Section title="Cost of Living"><Unavailable name="Cost" /></Section>
@@ -100,10 +100,10 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
 
       {data.voting ? (
         <Section title="Voting">
-          <ProfileCard label="Partisan Lean" value={data.voting.partisan_summary.lean_label} subtext={`${data.voting.partisan_summary.partisan_lean > 0 ? '+' : ''}${data.voting.partisan_summary.partisan_lean.toFixed(1)}`} />
-          <ProfileCard label="Competitiveness" value={data.voting.partisan_summary.competitive_index.toFixed(1)} subtext="0 = safe, 100 = toss-up" />
-          <ProfileCard label="Governor" value={data.voting.state_officials.governor.name} subtext={data.voting.state_officials.governor.party} />
-          <ProfileCard label="Trifecta" value={data.voting.state_officials.state_legislature.trifecta} />
+          <ProfileCard label="Partisan Lean" value={data.voting.partisan_summary?.lean_label ?? 'N/A'} subtext={data.voting.partisan_summary ? `${data.voting.partisan_summary.partisan_lean > 0 ? '+' : ''}${data.voting.partisan_summary.partisan_lean.toFixed(1)}` : undefined} />
+          <ProfileCard label="Competitiveness" value={safeFixed(data.voting.partisan_summary?.competitive_index)} subtext="0 = safe, 100 = toss-up" />
+          <ProfileCard label="Governor" value={data.voting.state_officials?.governor?.name ?? 'N/A'} subtext={data.voting.state_officials?.governor?.party} />
+          <ProfileCard label="Trifecta" value={data.voting.state_officials?.state_legislature?.trifecta ?? 'N/A'} />
         </Section>
       ) : (
         <Section title="Voting"><Unavailable name="Voting" /></Section>

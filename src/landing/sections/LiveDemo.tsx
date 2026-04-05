@@ -4,7 +4,7 @@ import { useLocationProfile } from '../../shared/hooks/useLocationProfile'
 import ZipInput from '../../shared/components/ZipInput'
 import ProfileCard from '../../shared/components/ProfileCard'
 import DataSourceBadge from '../../shared/components/DataSourceBadge'
-import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate } from '../../shared/utils/formatters'
+import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate, safeFixed } from '../../shared/utils/formatters'
 import type { LocationProfileResponse } from '../../api/types'
 
 const TABS = ['Area', 'Climate', 'Tax', 'Crime', 'Cost', 'Voting'] as const
@@ -149,8 +149,8 @@ function TaxTab({ data }: { data: LocationProfileResponse }) {
         <ProfileCard label="Top Marginal Rate" value={formatPercent(tax.state_income_tax.top_marginal_rate)} />
         <ProfileCard label="Gas Tax" value={`${tax.excise_tax.gas_tax_cents_per_gallon}¢/gal`} />
         <ProfileCard label="Has Estate Tax" value={tax.excise_tax.has_estate_tax ? 'Yes' : 'No'} />
-        <ProfileCard label="Avg AGI" value={formatCurrency(tax.irs_income_stats.avg_agi)} />
-        <ProfileCard label="Effective Fed Rate" value={formatPercent(tax.irs_income_stats.effective_federal_rate)} />
+        <ProfileCard label="Avg AGI" value={formatCurrency(tax.irs_income_stats?.avg_agi)} />
+        <ProfileCard label="Effective Fed Rate" value={formatPercent(tax.irs_income_stats?.effective_federal_rate)} />
       </div>
     </div>
   )
@@ -191,8 +191,8 @@ function CostTab({ data }: { data: LocationProfileResponse }) {
         <ProfileCard label="Utilities" value={formatCurrency(cost.housing_costs.estimated_utility_cost)} subtext="estimated monthly" />
         <ProfileCard label="FMR 1-Bed" value={formatCurrency(cost.fair_market_rents.one_bedroom)} subtext="fair market rent" />
         <ProfileCard label="FMR 2-Bed" value={formatCurrency(cost.fair_market_rents.two_bedroom)} subtext="fair market rent" />
-        <ProfileCard label="Cost Index" value={cost.price_indices.overall.toFixed(1)} subtext="100 = national avg" />
-        <ProfileCard label="Rent/Income" value={formatPercent(cost.affordability.rent_to_income_ratio)} />
+        <ProfileCard label="Cost Index" value={safeFixed(cost.price_indices?.overall)} subtext="100 = national avg" />
+        <ProfileCard label="Rent/Income" value={formatPercent(cost.affordability?.rent_to_income_ratio)} />
       </div>
     </div>
   )
@@ -202,20 +202,20 @@ function VotingTab({ data }: { data: LocationProfileResponse }) {
   const voting = data.voting
   if (!voting) return <Unavailable name="Voting" />
   const ps = voting.partisan_summary
-  const cd = voting.districts.congressional_district
+  const cd = voting.districts?.congressional_district
   return (
     <div>
       <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {voting.state}</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
-        <ProfileCard label="Partisan Lean" value={ps.lean_label} subtext={`${ps.partisan_lean > 0 ? '+' : ''}${ps.partisan_lean.toFixed(1)}`} />
-        <ProfileCard label="Trend" value={ps.trend_label} subtext={`${ps.dem_trend > 0 ? '+' : ''}${ps.dem_trend.toFixed(1)} Dem shift`} />
-        <ProfileCard label="Competitiveness" value={ps.competitive_index.toFixed(1)} subtext="0 = safe, 100 = toss-up" />
-        <ProfileCard label="Congress District" value={cd.district_name} subtext={`${cd.winner_party} (D ${formatPercent(cd.dem_pct)} / R ${formatPercent(cd.rep_pct)})`} />
-        {voting.presidential_elections.slice(0, 2).map(e => (
+        <ProfileCard label="Partisan Lean" value={ps?.lean_label ?? 'N/A'} subtext={ps ? `${ps.partisan_lean > 0 ? '+' : ''}${ps.partisan_lean.toFixed(1)}` : undefined} />
+        <ProfileCard label="Trend" value={ps?.trend_label ?? 'N/A'} subtext={ps ? `${ps.dem_trend > 0 ? '+' : ''}${ps.dem_trend.toFixed(1)} Dem shift` : undefined} />
+        <ProfileCard label="Competitiveness" value={safeFixed(ps?.competitive_index)} subtext="0 = safe, 100 = toss-up" />
+        {cd && <ProfileCard label="Congress District" value={cd.district_name} subtext={`${cd.winner_party} (D ${formatPercent(cd.dem_pct)} / R ${formatPercent(cd.rep_pct)})`} />}
+        {voting.presidential_elections?.slice(0, 2).map(e => (
           <ProfileCard key={e.year} label={`${e.year} Presidential`} value={`D ${formatPercent(e.dem_pct)} / R ${formatPercent(e.rep_pct)}`} />
         ))}
-        <ProfileCard label="Governor" value={voting.state_officials.governor.name} subtext={voting.state_officials.governor.party} />
-        <ProfileCard label="Trifecta" value={voting.state_officials.state_legislature.trifecta} />
+        <ProfileCard label="Governor" value={voting.state_officials?.governor?.name ?? 'N/A'} subtext={voting.state_officials?.governor?.party} />
+        <ProfileCard label="Trifecta" value={voting.state_officials?.state_legislature?.trifecta ?? 'N/A'} />
       </div>
     </div>
   )
