@@ -23,7 +23,7 @@ export default function ExplorePage() {
 
   return (
     <div className="relative" style={{ height: 'calc(100vh - 64px)' }}>
-      <MapView geojson={geojson} zip={zip} loading={boundaryLoading} />
+      <MapView geojson={geojson} zip={zip} loading={boundaryLoading} onClickZip={handleSubmit} />
       <SidePanel
         data={data}
         loading={loading}
