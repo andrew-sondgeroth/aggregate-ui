@@ -120,6 +120,43 @@ const FIELD_ALIASES: Record<string, { value: string; label: string }[]> = {
   effective_property_tax_rate: [
     { value: 'affordable', label: 'Affordable (Low tax)' },
   ],
+  partisan_lean: [
+    { value: 'highest', label: 'Strong Democrat (D+15 or more)' },
+    { value: 'high', label: 'Lean Democrat (D+5 to D+15)' },
+    { value: 'moderate', label: 'Competitive / Swing' },
+    { value: 'low', label: 'Lean Republican (R+5 to R+15)' },
+    { value: 'lowest', label: 'Strong Republican (R+15 or more)' },
+  ],
+  dem_trend: [
+    { value: 'high', label: 'Shifting Democratic' },
+    { value: 'moderate', label: 'Stable' },
+    { value: 'low', label: 'Shifting Republican' },
+  ],
+  competitive_index: [
+    { value: 'high', label: 'Highly competitive / Swing' },
+    { value: 'moderate', label: 'Somewhat competitive' },
+    { value: 'low', label: 'Safe seat' },
+  ],
+  dem_pct_2024: [
+    { value: 'high', label: 'Strongly Democratic' },
+    { value: 'moderate', label: 'Competitive' },
+    { value: 'low', label: 'Weakly Democratic' },
+  ],
+  rep_pct_2024: [
+    { value: 'high', label: 'Strongly Republican' },
+    { value: 'moderate', label: 'Competitive' },
+    { value: 'low', label: 'Weakly Republican' },
+  ],
+  dem_pct_2020: [
+    { value: 'high', label: 'Strongly Democratic' },
+    { value: 'moderate', label: 'Competitive' },
+    { value: 'low', label: 'Weakly Democratic' },
+  ],
+  rep_pct_2020: [
+    { value: 'high', label: 'Strongly Republican' },
+    { value: 'moderate', label: 'Competitive' },
+    { value: 'low', label: 'Weakly Republican' },
+  ],
 }
 
 function isBoolean(info: FieldOption) {
@@ -162,8 +199,15 @@ function BooleanInput({ row, updateRow }: { row: CriterionRow; updateRow: (patch
   )
 }
 
+// Fields whose aliases cover the full spectrum — hide generic percentile options
+const FULL_SPECTRUM_FIELDS = new Set([
+  'partisan_lean', 'dem_trend', 'competitive_index',
+  'dem_pct_2024', 'rep_pct_2024', 'dem_pct_2020', 'rep_pct_2020',
+])
+
 function LevelInput({ row, updateRow }: { row: CriterionRow; updateRow: (patch: Partial<CriterionRow>) => void }) {
   const aliases = FIELD_ALIASES[row.field]
+  const hideGeneric = FULL_SPECTRUM_FIELDS.has(row.field)
   return (
     <select
       value={row.level}
@@ -172,17 +216,19 @@ function LevelInput({ row, updateRow }: { row: CriterionRow; updateRow: (patch: 
     >
       <option value="">Select level...</option>
       {aliases && (
-        <optgroup label="Quick picks">
+        <optgroup label={hideGeneric ? 'Options' : 'Quick picks'}>
           {aliases.map(a => (
             <option key={a.value} value={a.value}>{a.label}</option>
           ))}
         </optgroup>
       )}
-      <optgroup label="Percentile ranges">
-        {STANDARD_LEVELS.map(l => (
-          <option key={l.value} value={l.value}>{l.label}</option>
-        ))}
-      </optgroup>
+      {!hideGeneric && (
+        <optgroup label="Percentile ranges">
+          {STANDARD_LEVELS.map(l => (
+            <option key={l.value} value={l.value}>{l.label}</option>
+          ))}
+        </optgroup>
+      )}
     </select>
   )
 }
