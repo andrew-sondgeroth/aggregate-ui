@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, GeoJSON, useMap, useMapEvents, Marker } from 'react-leaflet'
+import { MapContainer, TileLayer, WMSTileLayer, GeoJSON, useMap, useMapEvents, Marker } from 'react-leaflet'
 import type { FeatureCollection } from 'geojson'
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import L from 'leaflet'
@@ -16,6 +16,8 @@ const US_CENTER: [number, number] = [39.8, -98.5]
 const DEFAULT_ZOOM = 4
 const BOUNDARY_STYLE = { color: GOLD, weight: 2, fillColor: GOLD, fillOpacity: 0.15 }
 const TIGERWEB_BASE = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/1/query'
+const TIGERWEB_WMS = 'https://tigerweb.geo.census.gov/arcgis/services/TIGERweb/tigerWMS_Current/MapServer/WMSServer'
+const ZCTA_BOUNDARY_MIN_ZOOM = 9
 
 function ZipLabel({ zip, geojson }: { zip: string; geojson: FeatureCollection }) {
   const center = useMemo(() => {
@@ -47,6 +49,38 @@ function FitBounds({ geojson }: { geojson: FeatureCollection }) {
   }, [geojson, map])
 
   return null
+}
+
+function ZctaBoundaryOverlay() {
+  const map = useMap()
+  const [visible, setVisible] = useState(map.getZoom() >= ZCTA_BOUNDARY_MIN_ZOOM)
+
+  useMapEvents({
+    zoomend: () => setVisible(map.getZoom() >= ZCTA_BOUNDARY_MIN_ZOOM),
+  })
+
+  if (!visible) return null
+
+  return (
+    <>
+      <WMSTileLayer
+        url={TIGERWEB_WMS}
+        layers="77"
+        format="image/png"
+        transparent
+        opacity={0.35}
+        minZoom={ZCTA_BOUNDARY_MIN_ZOOM}
+      />
+      <WMSTileLayer
+        url={TIGERWEB_WMS}
+        layers="76"
+        format="image/png"
+        transparent
+        opacity={0.6}
+        minZoom={ZCTA_BOUNDARY_MIN_ZOOM + 1}
+      />
+    </>
+  )
 }
 
 function MapClickHandler({ onClickZip, onLookupChange }: { onClickZip: (zip: string) => void; onLookupChange: (loading: boolean) => void }) {
@@ -98,6 +132,7 @@ export default function MapView({ geojson, zip, loading, onClickZip }: MapViewPr
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         />
 
+        <ZctaBoundaryOverlay />
         <MapClickHandler onClickZip={onClickZip} onLookupChange={setLookingUp} />
 
         {geojson && zip && (
