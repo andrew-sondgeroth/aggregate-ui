@@ -11,10 +11,10 @@ interface MapViewProps {
   onClickZip: (zip: string) => void
 }
 
-const GOLD = '#f0b429'
+const GREEN = '#34d399'
 const US_CENTER: [number, number] = [39.8, -98.5]
 const DEFAULT_ZOOM = 4
-const BOUNDARY_STYLE = { color: GOLD, weight: 2, fillColor: GOLD, fillOpacity: 0.15 }
+const BOUNDARY_STYLE = { color: GREEN, weight: 2, fillColor: GREEN, fillOpacity: 0.15 }
 const TIGERWEB_BASE = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/1/query'
 const TIGERWEB_WMS = 'https://tigerweb.geo.census.gov/arcgis/services/TIGERweb/tigerWMS_Current/MapServer/WMSServer'
 const ZCTA_BOUNDARY_MIN_ZOOM = 9
@@ -28,7 +28,7 @@ function ZipLabel({ zip, geojson }: { zip: string; geojson: FeatureCollection })
 
   const icon = useMemo(() => L.divIcon({
     className: '',
-    html: `<div style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:${GOLD};text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 2px rgba(0,0,0,0.9);white-space:nowrap;pointer-events:none">${zip}</div>`,
+    html: `<div style="font-family:var(--font-mono);font-size:13px;font-weight:600;color:${GREEN};text-shadow:0 1px 4px rgba(0,0,0,0.8),0 0 2px rgba(0,0,0,0.9);white-space:nowrap;pointer-events:none">${zip}</div>`,
     iconSize: [0, 0],
     iconAnchor: [0, 0],
   }), [zip])
