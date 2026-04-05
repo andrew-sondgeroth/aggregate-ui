@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { isValidZip } from '../utils/zip-validation'
 
 interface ZipInputProps {
   onSubmit: (zip: string) => void
   loading?: boolean
+  value?: string
 }
 
-export default function ZipInput({ onSubmit, loading }: ZipInputProps) {
-  const [zip, setZip] = useState('')
+export default function ZipInput({ onSubmit, loading, value }: ZipInputProps) {
+  const [zip, setZip] = useState(value ?? '')
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setZip(value)
+    }
+  }, [value])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

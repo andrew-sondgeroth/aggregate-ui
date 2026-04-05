@@ -17,7 +17,7 @@ export default function SidePanel({ data, loading, error, onSubmit, lastZip }: S
   return (
     <SidePanelContainer
       title="Explore"
-      header={<ZipInput onSubmit={onSubmit} loading={loading} />}
+      header={<ZipInput onSubmit={onSubmit} loading={loading} value={lastZip ?? ''} />}
     >
       {error && (
         <ErrorMessage message={error} onRetry={lastZip ? () => onSubmit(lastZip) : undefined} />
