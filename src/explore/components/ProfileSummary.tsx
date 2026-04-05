@@ -7,24 +7,43 @@ interface ProfileSummaryProps {
   data: LocationProfileResponse
 }
 
-function Section({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
+const SECTION_ICONS: Record<string, string> = {
+  'Area': 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
+  'Climate': 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
+  'Tax': 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  'Crime': 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+  'Cost of Living': 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
+  'Voting': 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
+}
+
+function Section({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen)
+  const iconPath = SECTION_ICONS[title]
 
   return (
-    <div className="border-b border-[var(--color-border)] last:border-b-0">
+    <div className="mx-3 mt-3 first:mt-0 rounded-xl border border-[var(--color-border)] overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-3 text-[12px] uppercase tracking-[0.15em] font-semibold text-[var(--color-text-sub)] hover:text-[var(--color-text)] transition"
+        className={`w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold transition ${
+          open
+            ? 'bg-[var(--color-bg-card)] text-[var(--color-text)]'
+            : 'bg-[var(--color-bg-alt)] text-[var(--color-text-sub)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-card)]'
+        }`}
         aria-expanded={open}
         aria-label={`${title} section`}
       >
-        {title}
-        <svg className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        {iconPath && (
+          <svg className="w-4 h-4 shrink-0 text-[var(--color-text-dim)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={iconPath} />
+          </svg>
+        )}
+        <span className="flex-1 text-left">{title}</span>
+        <svg className={`w-4 h-4 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       {open && (
-        <div className="px-5 pb-4 grid grid-cols-2 gap-3">
+        <div className="px-4 py-3 grid grid-cols-2 gap-3 bg-[var(--color-bg-base)]/50">
           {children}
         </div>
       )}
@@ -34,7 +53,7 @@ function Section({ title, children, defaultOpen = true }: { title: string; child
 
 function Unavailable({ name }: { name: string }) {
   return (
-    <div className="px-5 pb-4 text-[13px] text-[var(--color-text-dim)]">
+    <div className="col-span-2 text-[13px] text-[var(--color-text-dim)] text-center py-2">
       {name} data unavailable
     </div>
   )
@@ -42,9 +61,9 @@ function Unavailable({ name }: { name: string }) {
 
 export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
   return (
-    <div>
+    <div className="pb-3">
       {data.area ? (
-        <Section title="Area">
+        <Section title="Area" defaultOpen>
           <ProfileCard label="Population" value={formatNumber(data.area.population.total_population)} tooltip="Total number of people living in this ZIP code area (Census ACS estimate)" />
           <ProfileCard label="Median Age" value={safeFixed(data.area.demographics.median_age)} tooltip="The age where half the population is older and half is younger" />
           <ProfileCard label="Median Income" value={formatCurrency(data.area.economic.median_household_income)} tooltip="Median annual household income — half of households earn more, half earn less" />
