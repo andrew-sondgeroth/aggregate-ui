@@ -7,7 +7,7 @@ import DataSourceBadge from '../../shared/components/DataSourceBadge'
 import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate, safeFixed } from '../../shared/utils/formatters'
 import type { LocationProfileResponse } from '../../api/types'
 
-const TABS = ['Area', 'Climate', 'Tax', 'Crime', 'Cost', 'Voting', 'Business'] as const
+const TABS = ['Area', 'Climate', 'Tax', 'Crime', 'Cost', 'Voting', 'Business', 'Air Quality', 'Healthcare', 'Education', 'Disaster'] as const
 type Tab = (typeof TABS)[number]
 
 export default function LiveDemo() {
@@ -77,6 +77,10 @@ export default function LiveDemo() {
             {activeTab === 'Cost' && <CostTab data={data} />}
             {activeTab === 'Voting' && <VotingTab data={data} />}
             {activeTab === 'Business' && <BusinessTab data={data} />}
+            {activeTab === 'Air Quality' && <AirQualityTab data={data} />}
+            {activeTab === 'Healthcare' && <HealthcareTab data={data} />}
+            {activeTab === 'Education' && <EducationTab data={data} />}
+            {activeTab === 'Disaster' && <DisasterTab data={data} />}
           </div>
 
           <div className="px-[28px] pb-[20px] flex items-center justify-end gap-4">
@@ -234,6 +238,91 @@ function BusinessTab({ data }: { data: LocationProfileResponse }) {
         {biz.top_industries?.slice(0, 5).map(ind => (
           <ProfileCard key={ind.code} label={ind.name} value={formatNumber(ind.employees)} subtext={`${formatNumber(ind.establishments)} establishments`} tooltip={`NAICS ${ind.code} — ${formatCurrency(ind.payroll)} annual payroll`} />
         ))}
+      </div>
+    </div>
+  )
+}
+
+function AirQualityTab({ data }: { data: LocationProfileResponse }) {
+  const aq = data.air_quality
+  if (!aq) return <Unavailable name="Air Quality" />
+  return (
+    <div>
+      <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {aq.state} — {aq.data_year} data</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
+        <ProfileCard label="Annual AQI" value={safeFixed(aq.aqi_summary?.annual_aqi)} tooltip="Average Air Quality Index — under 50 is good" />
+        <ProfileCard label="Good AQI Days" value={formatNumber(aq.aqi_summary?.days_good_aqi)} tooltip="Days with AQI 0-50" />
+        <ProfileCard label="Moderate Days" value={formatNumber(aq.aqi_summary?.days_moderate_aqi)} tooltip="Days with AQI 51-100" />
+        <ProfileCard label="Unhealthy Days" value={formatNumber(aq.aqi_summary?.days_unhealthy)} tooltip="Days with AQI over 150" />
+        <ProfileCard label="PM2.5 Annual" value={safeFixed(aq.pollutant_levels?.pm25_annual)} subtext="µg/m³" tooltip="Fine particulate matter — EPA standard is 12 µg/m³" />
+        <ProfileCard label="PM2.5 98th %" value={safeFixed(aq.pollutant_levels?.pm25_p98)} subtext="µg/m³" tooltip="98th percentile of daily PM2.5 readings" />
+        <ProfileCard label="Ozone Annual" value={safeFixed(aq.pollutant_levels?.ozone_annual, 3)} subtext="ppm" tooltip="Ground-level ozone annual average" />
+        <ProfileCard label="Monitor Dist." value={`${safeFixed(aq.monitor_info?.monitor_distance_miles)} mi`} tooltip="Distance to nearest air quality monitor" />
+      </div>
+    </div>
+  )
+}
+
+function HealthcareTab({ data }: { data: LocationProfileResponse }) {
+  const hc = data.healthcare
+  if (!hc) return <Unavailable name="Healthcare" />
+  return (
+    <div>
+      <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {hc.state}</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
+        <ProfileCard label="Hospitals" value={formatNumber(hc.hospital_access?.hospital_count)} tooltip="Hospitals in or near this ZIP" />
+        <ProfileCard label="Nearest Hospital" value={`${safeFixed(hc.hospital_access?.nearest_hospital_miles)} mi`} tooltip="Distance to nearest hospital" />
+        <ProfileCard label="Avg Rating" value={safeFixed(hc.hospital_access?.avg_hospital_rating)} subtext="out of 5" tooltip="Average CMS hospital rating" />
+        <ProfileCard label="Total Beds" value={formatNumber(hc.hospital_access?.total_beds)} tooltip="Total hospital beds" />
+        <ProfileCard label="Beds/Capita" value={safeFixed(hc.hospital_access?.beds_per_capita, 2)} tooltip="Hospital beds per 1,000 residents" />
+        <ProfileCard label="Primary Care Shortage" value={hc.shortage_areas?.primary_care_shortage ? 'Yes' : 'No'} tooltip="Health Professional Shortage Area designation" />
+        <ProfileCard label="Mental Health Shortage" value={hc.shortage_areas?.mental_health_shortage ? 'Yes' : 'No'} tooltip="Mental health professional shortage designation" />
+        <ProfileCard label="Pharmacies" value={formatNumber(hc.facility_counts?.pharmacy_count)} tooltip="Number of pharmacies nearby" />
+      </div>
+    </div>
+  )
+}
+
+function EducationTab({ data }: { data: LocationProfileResponse }) {
+  const ed = data.education
+  if (!ed) return <Unavailable name="Education" />
+  return (
+    <div>
+      <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {ed.state}</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
+        <ProfileCard label="Schools" value={formatNumber(ed.school_overview?.school_count)} tooltip="Total schools serving this area" />
+        <ProfileCard label="Enrollment" value={formatNumber(ed.school_overview?.total_enrollment)} tooltip="Total student enrollment" />
+        <ProfileCard label="Charter Schools" value={formatNumber(ed.school_overview?.charter_school_count)} tooltip="Number of charter schools" />
+        <ProfileCard label="Graduation Rate" value={formatPercent(ed.academic_performance?.graduation_rate)} tooltip="High school graduation rate" />
+        <ProfileCard label="Dropout Rate" value={formatPercent(ed.academic_performance?.dropout_rate)} tooltip="High school dropout rate" />
+        <ProfileCard label="College Enrollment" value={formatPercent(ed.academic_performance?.college_enrollment_rate)} tooltip="Rate of graduates enrolling in college" />
+        <ProfileCard label="Math Proficiency" value={formatPercent(ed.academic_performance?.math_proficiency_rate)} tooltip="Students meeting math proficiency standards" />
+        <ProfileCard label="Per-Pupil $" value={formatCurrency(ed.school_resources?.avg_per_pupil_spending)} tooltip="Average annual spending per student" />
+      </div>
+    </div>
+  )
+}
+
+function DisasterTab({ data }: { data: LocationProfileResponse }) {
+  const dr = data.disaster_risk
+  if (!dr) return <Unavailable name="Disaster Risk" />
+  const or_ = dr.overall_risk
+  return (
+    <div>
+      <p className="text-[12px] text-[var(--color-text-dim)] mb-[20px] font-[var(--font-mono)]">State: {dr.state} — FEMA National Risk Index</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[16px]">
+        <ProfileCard label="Overall Risk" value={or_?.overall_risk_rating ?? 'N/A'} subtext={`Score: ${safeFixed(or_?.overall_risk_score)}`} tooltip="FEMA overall natural hazard risk rating" />
+        <ProfileCard label="Annual Loss" value={formatCurrency(or_?.expected_annual_loss)} tooltip="Expected annual loss from natural hazards" />
+        <ProfileCard label="Social Vulnerability" value={safeFixed(or_?.social_vulnerability)} tooltip="Social vulnerability index — higher means more vulnerable" />
+        <ProfileCard label="Resilience" value={safeFixed(or_?.community_resilience)} tooltip="Community resilience index — higher means more resilient" />
+        <ProfileCard label="Tornado" value={safeFixed(dr.weather_hazards?.tornado_risk_score)} tooltip="Tornado risk score" />
+        <ProfileCard label="Hurricane" value={safeFixed(dr.weather_hazards?.hurricane_risk_score)} tooltip="Hurricane risk score" />
+        <ProfileCard label="Flood" value={safeFixed(dr.flood_hazards?.flood_risk_score)} tooltip="Riverine flood risk score" />
+        <ProfileCard label="Wildfire" value={safeFixed(dr.fire_hazards?.wildfire_risk_score)} tooltip="Wildfire risk score" />
+        <ProfileCard label="Earthquake" value={safeFixed(dr.geological_hazards?.earthquake_risk_score)} tooltip="Earthquake risk score" />
+        <ProfileCard label="Hail" value={safeFixed(dr.weather_hazards?.hail_risk_score)} tooltip="Hail risk score" />
+        <ProfileCard label="Drought" value={safeFixed(dr.weather_hazards?.drought_risk_score)} tooltip="Drought risk score" />
+        <ProfileCard label="Heat Wave" value={safeFixed(dr.weather_hazards?.heat_wave_risk_score)} tooltip="Heat wave risk score" />
       </div>
     </div>
   )

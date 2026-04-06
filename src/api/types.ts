@@ -10,6 +10,10 @@ export interface LocationProfileResponse {
   cost: CostProfile | null
   voting: VotingProfile | null
   business: BusinessProfile | null
+  air_quality: AirQualityProfile | null
+  healthcare: HealthcareProfile | null
+  education: EducationProfile | null
+  disaster_risk: DisasterRiskProfile | null
   data_sources: DataSources
 }
 
@@ -21,6 +25,10 @@ export interface DataSources {
   cost: DataSourceStatus
   voting: DataSourceStatus
   business: DataSourceStatus
+  air_quality: DataSourceStatus
+  healthcare: DataSourceStatus
+  education: DataSourceStatus
+  disaster_risk: DataSourceStatus
 }
 
 export interface DataSourceStatus {
@@ -272,6 +280,142 @@ export interface SubsectorData {
   establishments: number
   employees: number
   payroll: number
+}
+
+// --- Air Quality ---
+
+export interface AirQualityProfile {
+  state: string
+  data_year: number
+  pollutant_levels: PollutantLevels
+  aqi_summary: AqiSummary
+  monitor_info: MonitorInfo
+}
+
+export interface PollutantLevels {
+  pm25_annual: number
+  pm25_p98: number
+  ozone_annual: number
+  ozone_p98: number
+}
+
+export interface AqiSummary {
+  annual_aqi: number
+  days_good_aqi: number
+  days_moderate_aqi: number
+  days_unhealthy_sensitive: number
+  days_unhealthy: number
+}
+
+export interface MonitorInfo {
+  nearest_monitor_id: string
+  monitor_distance_miles: number
+}
+
+// --- Healthcare ---
+
+export interface HealthcareProfile {
+  state: string
+  data_year: number
+  hospital_access: HospitalAccess
+  shortage_areas: ShortageAreas
+  facility_counts: FacilityCounts
+}
+
+export interface HospitalAccess {
+  hospital_count: number
+  nearest_hospital_miles: number
+  avg_hospital_rating: number
+  total_beds: number
+  beds_per_capita: number
+}
+
+export interface ShortageAreas {
+  primary_care_shortage: boolean
+  mental_health_shortage: boolean
+  hpsa_score: number
+}
+
+export interface FacilityCounts {
+  urgent_care_count: number
+  pharmacy_count: number
+  nursing_home_count: number
+  avg_nursing_home_rating: number
+}
+
+// --- Education ---
+
+export interface EducationProfile {
+  state: string
+  data_year: number
+  school_overview: SchoolOverview
+  academic_performance: AcademicPerformance
+  school_resources: SchoolResources
+}
+
+export interface SchoolOverview {
+  school_count: number
+  total_enrollment: number
+  charter_school_count: number
+  magnet_school_count: number
+}
+
+export interface AcademicPerformance {
+  graduation_rate: number
+  dropout_rate: number
+  college_enrollment_rate: number
+  math_proficiency_rate: number
+  reading_proficiency_rate: number
+}
+
+export interface SchoolResources {
+  avg_student_teacher_ratio: number
+  avg_per_pupil_spending: number
+  title_i_school_pct: number
+}
+
+// --- Disaster Risk ---
+
+export interface DisasterRiskProfile {
+  state: string
+  data_year: number
+  overall_risk: OverallRisk
+  weather_hazards: WeatherHazards
+  geological_hazards: GeologicalHazards
+  flood_hazards: FloodHazards
+  fire_hazards: FireHazards
+}
+
+export interface OverallRisk {
+  overall_risk_score: number
+  overall_risk_rating: string
+  expected_annual_loss: number
+  social_vulnerability: number
+  community_resilience: number
+}
+
+export interface WeatherHazards {
+  tornado_risk_score: number
+  hurricane_risk_score: number
+  hail_risk_score: number
+  winter_weather_risk_score: number
+  drought_risk_score: number
+  heat_wave_risk_score: number
+  lightning_risk_score: number
+}
+
+export interface GeologicalHazards {
+  earthquake_risk_score: number
+  landslide_risk_score: number
+}
+
+export interface FloodHazards {
+  flood_risk_score: number
+  coastal_flood_risk_score: number
+}
+
+export interface FireHazards {
+  wildfire_risk_score: number
 }
 
 // --- Search ---

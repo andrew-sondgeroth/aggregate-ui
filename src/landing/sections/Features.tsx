@@ -41,6 +41,30 @@ const features = [
     icon: '🏢',
     items: ['Total establishments & employees', 'Annual payroll data', 'Industry sector breakdown', 'Top industries by employment'],
   },
+  {
+    title: 'Air Quality',
+    accent: 'var(--color-green)',
+    icon: '🌿',
+    items: ['Air Quality Index summaries', 'PM2.5 & ozone levels', 'Good / unhealthy day counts', 'Nearest monitor distance'],
+  },
+  {
+    title: 'Healthcare Access',
+    accent: 'var(--color-red)',
+    icon: '🏥',
+    items: ['Hospital count & ratings', 'Nearest hospital distance', 'Shortage area designations', 'Pharmacy & facility counts'],
+  },
+  {
+    title: 'Education',
+    accent: 'var(--color-blue)',
+    icon: '🎓',
+    items: ['School counts & enrollment', 'Graduation & dropout rates', 'Math & reading proficiency', 'Per-pupil spending'],
+  },
+  {
+    title: 'Disaster Risk',
+    accent: 'var(--color-amber)',
+    icon: '⚡',
+    items: ['FEMA overall risk rating', 'Expected annual loss', 'Flood, wildfire & earthquake risk', 'Social vulnerability index'],
+  },
 ]
 
 export default function Features() {

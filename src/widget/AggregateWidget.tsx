@@ -12,7 +12,7 @@ export interface WidgetConfig {
   defaultZip?: string
 }
 
-const DEFAULT_SECTIONS = ['area', 'climate', 'tax', 'crime', 'cost', 'voting', 'business']
+const DEFAULT_SECTIONS = ['area', 'climate', 'tax', 'crime', 'cost', 'voting', 'business', 'air_quality', 'healthcare', 'education', 'disaster_risk']
 
 export default function AggregateWidgetApp({ config }: { config: WidgetConfig }) {
   const sections = config.sections?.filter((s) => DEFAULT_SECTIONS.includes(s)) || DEFAULT_SECTIONS

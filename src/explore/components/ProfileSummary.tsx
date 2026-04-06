@@ -15,6 +15,10 @@ const SECTION_ICONS: Record<string, string> = {
   'Cost of Living': 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
   'Voting': 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
   'Business': 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+  'Air Quality': 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  'Healthcare': 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
+  'Education': 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222',
+  'Disaster Risk': 'M13 10V3L4 14h7v7l9-11h-7z',
 }
 
 function Section({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -140,6 +144,50 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
         </Section>
       ) : (
         <Section title="Business"><Unavailable name="Business" /></Section>
+      )}
+
+      {data.air_quality ? (
+        <Section title="Air Quality">
+          <ProfileCard label="Annual AQI" value={safeFixed(data.air_quality.aqi_summary?.annual_aqi)} tooltip="Average Air Quality Index — lower is better. Under 50 is good, over 100 is unhealthy." />
+          <ProfileCard label="Good AQI Days" value={formatNumber(data.air_quality.aqi_summary?.days_good_aqi)} tooltip="Days per year with AQI rated as Good (0-50)" />
+          <ProfileCard label="PM2.5" value={safeFixed(data.air_quality.pollutant_levels?.pm25_annual)} subtext="µg/m³ annual" tooltip="Fine particulate matter annual average — EPA standard is 12 µg/m³" />
+          <ProfileCard label="Ozone" value={safeFixed(data.air_quality.pollutant_levels?.ozone_annual, 3)} subtext="ppm annual" tooltip="Ground-level ozone annual average concentration" />
+        </Section>
+      ) : (
+        <Section title="Air Quality"><Unavailable name="Air Quality" /></Section>
+      )}
+
+      {data.healthcare ? (
+        <Section title="Healthcare">
+          <ProfileCard label="Hospitals" value={formatNumber(data.healthcare.hospital_access?.hospital_count)} tooltip="Number of hospitals in or near this ZIP code" />
+          <ProfileCard label="Nearest Hospital" value={`${safeFixed(data.healthcare.hospital_access?.nearest_hospital_miles)} mi`} tooltip="Distance to the nearest hospital in miles" />
+          <ProfileCard label="Hospital Rating" value={safeFixed(data.healthcare.hospital_access?.avg_hospital_rating)} subtext="out of 5" tooltip="Average CMS hospital quality rating (1-5 stars)" />
+          <ProfileCard label="Care Shortage" value={data.healthcare.shortage_areas?.primary_care_shortage ? 'Yes' : 'No'} tooltip="Whether this area is designated as a Health Professional Shortage Area for primary care" />
+        </Section>
+      ) : (
+        <Section title="Healthcare"><Unavailable name="Healthcare" /></Section>
+      )}
+
+      {data.education ? (
+        <Section title="Education">
+          <ProfileCard label="Schools" value={formatNumber(data.education.school_overview?.school_count)} tooltip="Total number of schools serving this ZIP code" />
+          <ProfileCard label="Enrollment" value={formatNumber(data.education.school_overview?.total_enrollment)} tooltip="Total student enrollment across all schools" />
+          <ProfileCard label="Graduation Rate" value={formatPercent(data.education.academic_performance?.graduation_rate)} tooltip="High school graduation rate" />
+          <ProfileCard label="Per-Pupil Spending" value={formatCurrency(data.education.school_resources?.avg_per_pupil_spending)} tooltip="Average annual spending per student" />
+        </Section>
+      ) : (
+        <Section title="Education"><Unavailable name="Education" /></Section>
+      )}
+
+      {data.disaster_risk ? (
+        <Section title="Disaster Risk">
+          <ProfileCard label="Overall Risk" value={data.disaster_risk.overall_risk?.overall_risk_rating ?? 'N/A'} subtext={`Score: ${safeFixed(data.disaster_risk.overall_risk?.overall_risk_score)}`} tooltip="FEMA National Risk Index overall risk rating for this area" />
+          <ProfileCard label="Annual Loss" value={formatCurrency(data.disaster_risk.overall_risk?.expected_annual_loss)} tooltip="Expected annual loss from natural hazards in dollars" />
+          <ProfileCard label="Flood Risk" value={safeFixed(data.disaster_risk.flood_hazards?.flood_risk_score)} tooltip="Riverine flood risk score from FEMA National Risk Index" />
+          <ProfileCard label="Wildfire Risk" value={safeFixed(data.disaster_risk.fire_hazards?.wildfire_risk_score)} tooltip="Wildfire risk score from FEMA National Risk Index" />
+        </Section>
+      ) : (
+        <Section title="Disaster Risk"><Unavailable name="Disaster Risk" /></Section>
       )}
     </div>
   )

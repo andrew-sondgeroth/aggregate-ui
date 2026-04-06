@@ -26,6 +26,10 @@ export default function WidgetProfileView({ data, activeTab }: WidgetProfileView
       {activeTab === 'cost' && <CostView data={data} />}
       {activeTab === 'voting' && <VotingView data={data} />}
       {activeTab === 'business' && <BusinessView data={data} />}
+      {activeTab === 'air_quality' && <AirQualityView data={data} />}
+      {activeTab === 'healthcare' && <HealthcareView data={data} />}
+      {activeTab === 'education' && <EducationView data={data} />}
+      {activeTab === 'disaster_risk' && <DisasterRiskView data={data} />}
     </div>
   )
 }
@@ -143,6 +147,58 @@ function BusinessView({ data }: { data: LocationProfileResponse }) {
       {biz.top_industries?.slice(0, 3).map(ind => (
         <Metric key={ind.code} label={ind.name} value={formatNumber(ind.employees)} sub={`${formatNumber(ind.establishments)} estab.`} tooltip={`NAICS ${ind.code}`} />
       ))}
+    </div>
+  )
+}
+
+function AirQualityView({ data }: { data: LocationProfileResponse }) {
+  const aq = data.air_quality
+  if (!aq) return <div className="aw-empty">Air quality data unavailable</div>
+  return (
+    <div className="aw-grid">
+      <Metric label="Annual AQI" value={safeFixed(aq.aqi_summary?.annual_aqi)} tooltip="Average Air Quality Index" />
+      <Metric label="Good Days" value={formatNumber(aq.aqi_summary?.days_good_aqi)} tooltip="Days with good air quality" />
+      <Metric label="PM2.5" value={safeFixed(aq.pollutant_levels?.pm25_annual)} sub="µg/m³" tooltip="Fine particulate matter" />
+      <Metric label="Ozone" value={safeFixed(aq.pollutant_levels?.ozone_annual, 3)} sub="ppm" tooltip="Ground-level ozone" />
+    </div>
+  )
+}
+
+function HealthcareView({ data }: { data: LocationProfileResponse }) {
+  const hc = data.healthcare
+  if (!hc) return <div className="aw-empty">Healthcare data unavailable</div>
+  return (
+    <div className="aw-grid">
+      <Metric label="Hospitals" value={formatNumber(hc.hospital_access?.hospital_count)} tooltip="Nearby hospitals" />
+      <Metric label="Nearest" value={`${safeFixed(hc.hospital_access?.nearest_hospital_miles)} mi`} tooltip="Distance to nearest hospital" />
+      <Metric label="Rating" value={safeFixed(hc.hospital_access?.avg_hospital_rating)} sub="/5" tooltip="Avg hospital rating" />
+      <Metric label="Care Shortage" value={hc.shortage_areas?.primary_care_shortage ? 'Yes' : 'No'} tooltip="Primary care shortage area" />
+    </div>
+  )
+}
+
+function EducationView({ data }: { data: LocationProfileResponse }) {
+  const ed = data.education
+  if (!ed) return <div className="aw-empty">Education data unavailable</div>
+  return (
+    <div className="aw-grid">
+      <Metric label="Schools" value={formatNumber(ed.school_overview?.school_count)} tooltip="Total schools" />
+      <Metric label="Enrollment" value={formatNumber(ed.school_overview?.total_enrollment)} tooltip="Total students" />
+      <Metric label="Grad Rate" value={formatPercent(ed.academic_performance?.graduation_rate)} tooltip="Graduation rate" />
+      <Metric label="Per-Pupil $" value={formatCurrency(ed.school_resources?.avg_per_pupil_spending)} tooltip="Spending per student" />
+    </div>
+  )
+}
+
+function DisasterRiskView({ data }: { data: LocationProfileResponse }) {
+  const dr = data.disaster_risk
+  if (!dr) return <div className="aw-empty">Disaster risk data unavailable</div>
+  return (
+    <div className="aw-grid">
+      <Metric label="Overall Risk" value={dr.overall_risk?.overall_risk_rating ?? 'N/A'} sub={`Score: ${safeFixed(dr.overall_risk?.overall_risk_score)}`} tooltip="FEMA risk rating" />
+      <Metric label="Annual Loss" value={formatCurrency(dr.overall_risk?.expected_annual_loss)} tooltip="Expected annual loss" />
+      <Metric label="Flood" value={safeFixed(dr.flood_hazards?.flood_risk_score)} tooltip="Flood risk" />
+      <Metric label="Wildfire" value={safeFixed(dr.fire_hazards?.wildfire_risk_score)} tooltip="Wildfire risk" />
     </div>
   )
 }
