@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { LocationProfileResponse } from '../../api/types'
 import ZipInput from '../../shared/components/ZipInput'
 import SidePanelContainer, { SkeletonCards } from '../../shared/components/SidePanelContainer'
@@ -14,10 +15,13 @@ interface SidePanelProps {
 }
 
 export default function SidePanel({ data, loading, error, onSubmit, lastZip }: SidePanelProps) {
+  const [expanded, setExpanded] = useState(false)
+
   return (
     <SidePanelContainer
       title="Explore"
       header={<ZipInput onSubmit={onSubmit} loading={loading} value={lastZip ?? ''} />}
+      expanded={expanded}
     >
       {error && (
         <ErrorMessage message={error} onRetry={lastZip ? () => onSubmit(lastZip) : undefined} />
@@ -35,7 +39,7 @@ export default function SidePanel({ data, loading, error, onSubmit, lastZip }: S
               ))}
             </div>
           </div>
-          <ProfileSummary data={data} />
+          <ProfileSummary data={data} onExpandedChange={setExpanded} />
         </>
       )}
 

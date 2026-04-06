@@ -4,9 +4,10 @@ interface SidePanelContainerProps {
   title: string
   header?: ReactNode
   children: ReactNode
+  expanded?: boolean
 }
 
-export default function SidePanelContainer({ title, header, children }: SidePanelContainerProps) {
+export default function SidePanelContainer({ title, header, children, expanded = false }: SidePanelContainerProps) {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
@@ -24,8 +25,9 @@ export default function SidePanelContainer({ title, header, children }: SidePane
       <div className={`
         absolute z-[1000] flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-base)]/90 backdrop-blur-xl overflow-hidden
         inset-x-2 bottom-2 top-auto h-[55vh]
-        sm:inset-x-auto sm:top-4 sm:left-4 sm:bottom-4 sm:h-auto sm:w-[400px]
-        transition-transform duration-300
+        sm:inset-x-auto sm:top-4 sm:left-4 sm:bottom-4 sm:h-auto
+        transition-all duration-300
+        ${expanded ? 'sm:w-[calc(100vw-32px)] sm:max-w-[800px]' : 'sm:w-[400px]'}
         ${collapsed ? 'translate-y-[calc(100%+16px)] sm:translate-y-0 sm:-translate-x-[calc(100%+32px)]' : ''}
       `}>
         <div className="shrink-0 px-5 pt-5 pb-4 border-b border-[var(--color-border)] flex items-start justify-between gap-3">

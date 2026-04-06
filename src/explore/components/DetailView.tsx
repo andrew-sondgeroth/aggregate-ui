@@ -88,13 +88,14 @@ export default function DetailView({ domain, data, onBack }: DetailViewProps) {
         Back to summary
       </button>
       <h3 className="text-[15px] font-semibold text-[var(--color-text)] mb-4">{domain} — All Fields</h3>
-      <div className="space-y-1.5">
+      <div className="columns-1 sm:columns-2 gap-6">
         {fields.map((group, i) => (
-          <div key={i}>
+          <div key={i} className="break-inside-avoid mb-2">
             {group.header && <SectionHeader title={group.header} />}
+            <div className="space-y-1.5">
             {group.fields.map((f, j) => (
               <FieldRow key={j} {...f} />
-            ))}
+            ))}</div>
           </div>
         ))}
       </div>
