@@ -1,11 +1,14 @@
 import { useState, memo } from 'react'
 import type { LocationProfileResponse } from '../../api/types'
 import ProfileCard from '../../shared/components/ProfileCard'
+import DetailView from './DetailView'
 import { formatCurrency, formatPercent, formatNumber, formatTemp, formatRate, safeFixed } from '../../shared/utils/formatters'
 
 interface ProfileSummaryProps {
   data: LocationProfileResponse
 }
+
+type DetailDomain = string | null
 
 const SECTION_ICONS: Record<string, string> = {
   'Area': 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
@@ -21,7 +24,7 @@ const SECTION_ICONS: Record<string, string> = {
   'Disaster Risk': 'M13 10V3L4 14h7v7l9-11h-7z',
 }
 
-function Section({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
+function Section({ title, children, defaultOpen = false, onDetail }: { title: string; children: React.ReactNode; defaultOpen?: boolean; onDetail?: () => void }) {
   const [open, setOpen] = useState(defaultOpen)
   const iconPath = SECTION_ICONS[title]
 
@@ -48,8 +51,18 @@ function Section({ title, children, defaultOpen = false }: { title: string; chil
         </svg>
       </button>
       {open && (
-        <div className="px-4 py-3 grid grid-cols-2 gap-3 bg-[var(--color-bg-base)]/50">
-          {children}
+        <div className="px-4 py-3 bg-[var(--color-bg-base)]/50">
+          <div className="grid grid-cols-2 gap-3">
+            {children}
+          </div>
+          {onDetail && (
+            <button
+              onClick={onDetail}
+              className="w-full mt-3 py-2 text-[12px] text-[var(--color-text-dim)] hover:text-[var(--color-gold)] transition rounded-lg border border-dashed border-[var(--color-border)] hover:border-[var(--color-gold)]/30"
+            >
+              View all fields →
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -65,10 +78,16 @@ function Unavailable({ name }: { name: string }) {
 }
 
 export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
+  const [detailDomain, setDetailDomain] = useState<DetailDomain>(null)
+
+  if (detailDomain) {
+    return <DetailView domain={detailDomain} data={data} onBack={() => setDetailDomain(null)} />
+  }
+
   return (
     <div className="pb-3">
       {data.area ? (
-        <Section title="Area" defaultOpen>
+        <Section title="Area" defaultOpen onDetail={() => setDetailDomain('Area')}>
           <ProfileCard label="Population" value={formatNumber(data.area.population.total_population)} tooltip="Total number of people living in this ZIP code area (Census ACS estimate)" />
           <ProfileCard label="Median Age" value={safeFixed(data.area.demographics.median_age)} tooltip="The age where half the population is older and half is younger" />
           <ProfileCard label="Median Income" value={formatCurrency(data.area.economic.median_household_income)} tooltip="Median annual household income — half of households earn more, half earn less" />
@@ -79,7 +98,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.climate ? (
-        <Section title="Climate">
+        <Section title="Climate" onDetail={() => setDetailDomain('Climate')}>
           <ProfileCard label="Avg Temp" value={formatTemp(data.climate.annual_summary.avg_temp)} tooltip="Average annual temperature based on 30-year climate normals from the nearest NOAA weather station" />
           <ProfileCard label="Summer High" value={formatTemp(data.climate.annual_summary.summer_avg_high)} tooltip="Average daily high temperature during June, July, and August" />
           <ProfileCard label="Winter Low" value={formatTemp(data.climate.annual_summary.winter_avg_low)} tooltip="Average daily low temperature during December, January, and February" />
@@ -90,7 +109,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.tax ? (
-        <Section title="Tax">
+        <Section title="Tax" onDetail={() => setDetailDomain('Tax')}>
           <ProfileCard label="Sales Tax" value={formatPercent(data.tax.sales_tax.combined_rate)} tooltip="Combined state + county + city sales tax rate applied to purchases" />
           <ProfileCard label="Top Income Rate" value={formatPercent(data.tax.state_income_tax.top_marginal_rate)} tooltip="Highest marginal state income tax rate (0% if no state income tax)" />
           <ProfileCard label="Avg AGI" value={formatCurrency(data.tax.irs_income_stats?.avg_agi)} tooltip="Average adjusted gross income from IRS tax returns filed in this ZIP code" />
@@ -101,7 +120,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.crime ? (
-        <Section title="Crime">
+        <Section title="Crime" onDetail={() => setDetailDomain('Crime')}>
           <ProfileCard label="Total Crime" value={formatRate(data.crime.summary.total_crime_rate)} subtext="per 100k" tooltip="Combined violent and property crime incidents per 100,000 people (FBI UCR data, state-level)" />
           <ProfileCard label="Violent Crime" value={formatRate(data.crime.violent_crime.violent_crime_rate)} subtext="per 100k" tooltip="Violent crimes (murder, rape, robbery, aggravated assault) per 100,000 people" />
           <ProfileCard label="Property Crime" value={formatRate(data.crime.property_crime.property_crime_rate)} subtext="per 100k" tooltip="Property crimes (burglary, larceny, motor vehicle theft) per 100,000 people" />
@@ -112,7 +131,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.cost ? (
-        <Section title="Cost of Living">
+        <Section title="Cost of Living" onDetail={() => setDetailDomain('Cost of Living')}>
           <ProfileCard label="Cost Index" value={safeFixed(data.cost.price_indices?.overall)} subtext="100 = national avg" tooltip="Regional price parity index — 100 is the national average. Higher means more expensive." />
           <ProfileCard label="Median Rent" value={formatCurrency(data.cost.housing_costs.median_gross_rent)} tooltip="Median monthly gross rent including utilities for renter-occupied units" />
           <ProfileCard label="Home Value" value={formatCurrency(data.cost.housing_costs.median_home_value)} tooltip="Median value of owner-occupied housing units in this area" />
@@ -123,7 +142,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.voting ? (
-        <Section title="Voting">
+        <Section title="Voting" onDetail={() => setDetailDomain('Voting')}>
           <ProfileCard label="Partisan Lean" value={data.voting.partisan_summary?.lean_label ?? 'N/A'} subtext={data.voting.partisan_summary ? `${data.voting.partisan_summary.partisan_lean > 0 ? '+' : ''}${data.voting.partisan_summary.partisan_lean.toFixed(1)}` : undefined} tooltip="Average partisan lean across recent presidential elections. Positive = Democratic, negative = Republican." />
           <ProfileCard label="Competitiveness" value={safeFixed(data.voting.partisan_summary?.competitive_index)} subtext="0 = safe, 100 = toss-up" tooltip="How competitive elections are in this area. 100 = perfectly split, 0 = one party dominates." />
           <ProfileCard label="Governor" value={data.voting.state_officials?.governor?.name ?? 'N/A'} subtext={data.voting.state_officials?.governor?.party} tooltip="Current state governor and their political party" />
@@ -134,7 +153,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.business ? (
-        <Section title="Business">
+        <Section title="Business" onDetail={() => setDetailDomain('Business')}>
           <ProfileCard label="Establishments" value={formatNumber(data.business.summary.total_establishments)} tooltip="Total number of business establishments in this ZIP code (Census County Business Patterns)" />
           <ProfileCard label="Employees" value={formatNumber(data.business.summary.total_employees)} tooltip="Total number of employees across all establishments" />
           <ProfileCard label="Annual Payroll" value={formatCurrency(data.business.summary.total_annual_payroll)} tooltip="Total annual payroll across all establishments" />
@@ -147,7 +166,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.air_quality ? (
-        <Section title="Air Quality">
+        <Section title="Air Quality" onDetail={() => setDetailDomain('Air Quality')}>
           <ProfileCard label="Annual AQI" value={safeFixed(data.air_quality.aqi_summary?.annual_aqi)} tooltip="Average Air Quality Index — lower is better. Under 50 is good, over 100 is unhealthy." />
           <ProfileCard label="Good AQI Days" value={formatNumber(data.air_quality.aqi_summary?.days_good_aqi)} tooltip="Days per year with AQI rated as Good (0-50)" />
           <ProfileCard label="PM2.5" value={safeFixed(data.air_quality.pollutant_levels?.pm25_annual)} subtext="µg/m³ annual" tooltip="Fine particulate matter annual average — EPA standard is 12 µg/m³" />
@@ -158,7 +177,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.healthcare ? (
-        <Section title="Healthcare">
+        <Section title="Healthcare" onDetail={() => setDetailDomain('Healthcare')}>
           <ProfileCard label="Hospitals" value={formatNumber(data.healthcare.hospital_access?.hospital_count)} tooltip="Number of hospitals in or near this ZIP code" />
           <ProfileCard label="Nearest Hospital" value={`${safeFixed(data.healthcare.hospital_access?.nearest_hospital_miles)} mi`} tooltip="Distance to the nearest hospital in miles" />
           <ProfileCard label="Hospital Rating" value={safeFixed(data.healthcare.hospital_access?.avg_hospital_rating)} subtext="out of 5" tooltip="Average CMS hospital quality rating (1-5 stars)" />
@@ -169,7 +188,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.education ? (
-        <Section title="Education">
+        <Section title="Education" onDetail={() => setDetailDomain('Education')}>
           <ProfileCard label="Schools" value={formatNumber(data.education.school_overview?.school_count)} tooltip="Total number of schools serving this ZIP code" />
           <ProfileCard label="Enrollment" value={formatNumber(data.education.school_overview?.total_enrollment)} tooltip="Total student enrollment across all schools" />
           <ProfileCard label="Graduation Rate" value={formatPercent(data.education.academic_performance?.graduation_rate)} tooltip="High school graduation rate" />
@@ -180,7 +199,7 @@ export default memo(function ProfileSummary({ data }: ProfileSummaryProps) {
       )}
 
       {data.disaster_risk ? (
-        <Section title="Disaster Risk">
+        <Section title="Disaster Risk" onDetail={() => setDetailDomain('Disaster Risk')}>
           <ProfileCard label="Overall Risk" value={data.disaster_risk.overall_risk?.overall_risk_rating ?? 'N/A'} subtext={`Score: ${safeFixed(data.disaster_risk.overall_risk?.overall_risk_score)}`} tooltip="FEMA National Risk Index overall risk rating for this area" />
           <ProfileCard label="Annual Loss" value={formatCurrency(data.disaster_risk.overall_risk?.expected_annual_loss)} tooltip="Expected annual loss from natural hazards in dollars" />
           <ProfileCard label="Flood Risk" value={safeFixed(data.disaster_risk.flood_hazards?.flood_risk_score)} tooltip="Riverine flood risk score from FEMA National Risk Index" />
