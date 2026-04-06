@@ -26,10 +26,10 @@ function Section({ title, children, defaultOpen = false }: { title: string; chil
   const iconPath = SECTION_ICONS[title]
 
   return (
-    <div className="mx-3 mt-3 first:mt-0 rounded-xl border border-[var(--color-border)] overflow-hidden">
+    <div className="mx-3 mt-3 first:mt-0 rounded-xl border border-[var(--color-border)]">
       <button
         onClick={() => setOpen(!open)}
-        className={`w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold transition ${
+        className={`w-full flex items-center gap-3 px-4 py-3 text-[13px] font-semibold transition rounded-t-xl ${!open ? 'rounded-b-xl' : ''} ${
           open
             ? 'bg-[var(--color-bg-card)] text-[var(--color-text)]'
             : 'bg-[var(--color-bg-alt)] text-[var(--color-text-sub)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-card)]'

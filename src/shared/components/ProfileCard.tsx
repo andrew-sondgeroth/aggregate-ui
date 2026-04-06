@@ -34,7 +34,7 @@ export default function ProfileCard({ label, value, subtext, tooltip }: ProfileC
         <p className="text-[12px] text-[var(--color-text-sub)] mt-[6px]">{subtext}</p>
       )}
       {showTip && tooltip && (
-        <div className="absolute z-10 left-0 right-0 bottom-full mb-2 px-3 py-2 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[12px] text-[var(--color-text-sub)] leading-relaxed shadow-lg pointer-events-none">
+        <div className="absolute z-20 left-0 right-0 top-full mt-2 px-3 py-2 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[12px] text-[var(--color-text-sub)] leading-relaxed shadow-lg pointer-events-none">
           {tooltip}
         </div>
       )}
